@@ -7,10 +7,13 @@ from config import db
 
 class Book(db.Model, SerializerMixin):
     __tablename__ = "books"
+    
+    serialize_rules = ('-author',)
+    
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    cover_image = db.Column(db.String, nullable=False)
-
+    book_cover = db.Column(db.String, nullable=False)
+    author = db.relationship('Author', back_populates='books')
     author_id = db.Column(db.String, db.ForeignKey('authors.id'))
 
     def __repr__(self):
@@ -18,11 +21,12 @@ class Book(db.Model, SerializerMixin):
 
 class Author(db.Model, SerializerMixin):
     __tablename__ = "authors"
+
+    serialize_rules = ('-book.author',)
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    bio = db.Column(db.String, nullable=False)
-
-    books = db.relationship('Book', backref='author')
+    books = db.relationship('Book', back_populates='author')
 
     def __repr__(self):
-        return f'<ID: {self.id}, Name: {self.title}>'
+        return f'<ID: {self.id}, Name: {self.name}>'
