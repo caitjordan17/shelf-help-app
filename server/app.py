@@ -37,8 +37,13 @@ def index():
 class Books(Resource):
     def get(self):
         return make_response(get_all(Book), 200)
+    
+class Authors(Resource):
+    def get(self):
+        return make_response(get_all(Author), 200)
 
 api.add_resource(Books, '/books', endpoint='books')
+api.add_resource(Authors, '/authors', endpoint='authors')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
