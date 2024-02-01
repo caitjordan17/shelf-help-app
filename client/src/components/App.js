@@ -6,3 +6,6 @@ function App() {
 }
 
 export default App;
+
+
+// NavBar, Login, BrowseShelves, MyShelves
