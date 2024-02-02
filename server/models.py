@@ -30,3 +30,13 @@ class Author(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<ID: {self.id}, Name: {self.name}>'
+    
+class Bookshelf(db.Model, SerializerMixin):
+    __tablename__ = "bookshelves"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    books = db.relationship('Book', back_populates='bookshelves')
+
+    def __repr__(self):
+        return f'<ID: {self.id}, Name: {self.name}>'
