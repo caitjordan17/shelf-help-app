@@ -15,7 +15,7 @@ bookshelf_books = db.Table('bookshelf_books',
 class Book(db.Model, SerializerMixin):
     __tablename__ = "books"
 
-    serialize_rules = ('-author', '-bookshelves',)
+    serialize_rules = ('-author.books', '-bookshelves',)
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)

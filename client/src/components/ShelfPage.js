@@ -1,15 +1,17 @@
 import React from "react";
-import BookCard from "./BookCard";
+import Book from "./Book";
+import { NavLink } from "react-router-dom";
 
-function ShelfPage({bookshelf}){
+function ShelfPage({bookshelf, handleBackClick}){
     
     
     return(
         <div className="bookshelfCard">
+            <NavLink className="navButton" exact to="/">Back</NavLink>
             <h2>{bookshelf.name}</h2>
-            <h5>created by {bookshelf.user.username}</h5>
+            <p>created by {bookshelf.user.username}</p>
             {bookshelf.books.map((book) => (
-                <BookCard book={book} key={book.id} />
+                <Book book={book} key={book.id} />
             ))}
         </div>
     )

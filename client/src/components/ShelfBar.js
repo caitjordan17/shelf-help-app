@@ -17,12 +17,14 @@ function ShelfBar({bshelf, handleClick}){
 
     return(
         <div className="bar">
-            <div className="belt">
-                {bookList}
-                <MoreButton onClickMore={handleClickMore} />
+            <div className="background-box">
+                <div className="belt">
+                    {bookList}
+                    <MoreButton onClickMore={handleClickMore} />
+                </div>
+                <h2 onClick={handleClick} id={bshelf.id}>{bshelf.name}</h2>
+                <p>created by {bshelf.user.username}</p>
             </div>
-            <h2>{bshelf.name}</h2>
-            <p>created by {bshelf.user.username}</p>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import BrowseShelves from "./BrowseShelves";
@@ -21,12 +21,24 @@ function App() {
   }
 
   return(
-    <div>
-      <h1>ShelfHelp</h1>
-      <div>
-        <BrowseShelves bookshelves={bookshelves} handleClick={handleClick}/>
-      </div>
-    </div>
+     <Router>
+        <div className="nav-bar">
+          <NavBar />
+        </div>
+        <div className="body-content">
+          <Switch>
+            {/* <Route path="/">
+
+            </Route>
+            <Route path="/">
+
+            </Route> */}
+            <Route exact path="/">
+              <BrowseShelves bookshelves={bookshelves} handleClick={handleClick}/>
+            </Route>
+          </Switch>
+        </div>
+    </Router> 
   );
 }
 

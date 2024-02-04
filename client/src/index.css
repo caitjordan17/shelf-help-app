@@ -6,7 +6,9 @@
 }
 
 body {
-  background-color: #d6ece7;
+  background-color: #efede6;
+  border: 0px;
+  margin: 0px
 }
 
 .app {
@@ -21,15 +23,18 @@ body {
     ". tb tb tb .";
 }
 
-/* --------------------- */
+/* --------------------------------------------------------------- */
 /*         FONTS         */
 
 h1 {
-  margin-bottom: 100px;
+  padding-top: 30px;
+  margin-bottom: 30px;
+  margin-top: 0px;
   font-family: "Gill Sans", sans-serif;
-  color: #957d95;
+  color: #d6ece7;
   font-size: 5rem;
-  margin-left: 1rem;
+  margin-left: 1rem;  
+  background-color: #77b59c;
 }
 
 h2 { 
@@ -46,11 +51,60 @@ p {
   color: #9999C3;
   font-size: 1rem;
   margin-left: 1rem;
+  margin-bottom: 0px;
 }
 
-/* --------------------- */
+/* --------------------------------------------------------------- */
+/*     NAV BAR CSS     */
+
+
+nav a{
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  width:30%;
+  text-decoration: none;
+  color: #d6ece7;
+}
+
+nav a.active {
+  background-color: #746ae5;
+  color: #d6ece7;
+}
+
+.navigation {
+  margin-bottom: 0px;
+  font-size: 2rem;
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navButton {
+  margin: 0px;
+  width: 100%;
+}
+
+.nav-bar {
+  background-color: #77b59c;
+}
+
+.header {
+  padding-bottom: 1rem;
+}
+
+/* --------------------------------------------------------------- */
 /*     SHELF BAR CSS     */
+
+.body-content {
+  background-color: #efede6;
+  margin: 0px;
+}
+
 .belt {
+  margin-top: 80px;
   grid-area: bt;
   display: flex;
   justify-content: space-evenly;
@@ -63,15 +117,27 @@ p {
 img {
   height: 220px;
   width: auto;
-  box-shadow: 0px 10px 20px  #b8e2d8;
+  /* box-shadow: 0px 10px 20px  #d6ece7; */
 }
 
 button {
-  background-color: #BB999C;
+  background-color: #efede6;
   border: none;
   box-shadow: none;
-  font-size: 1.5rem;
-  color: white;
+  font-size: 3rem;
+  color: #77b59c;
   margin-left: 1rem;
-  border-radius: 10px;
+}
+
+/* --------------------------------------------------------------- */
+/*     SHELF PAGE CSS     */  
+
+.back {
+  margin-top: 2rem;
+  background-color: #746ae5;
+  color: #d6ece7;
+  font-size: 2rem;
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 200;
+  border-radius: 5px;
 }
