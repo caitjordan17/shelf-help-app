@@ -9,7 +9,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import db, Book, Author
+from models import db, Book, Author, Bookshelf, User
 
 # Views go here!
 
@@ -41,9 +41,24 @@ class Books(Resource):
 class Authors(Resource):
     def get(self):
         return make_response(get_all(Author), 200)
-
+    
+class Bookshelves(Resource):
+    def get(self):
+        return make_response(get_all(Bookshelf), 200)
+    
+class BookshelvesByID(Resource):
+    def get(self, id):
+        return make_response(get_by_id(Bookshelf, id))
+    
+class Users(Resource):
+    def get(self):
+        return make_response(get_all(User), 200)
+    
+api.add_resource(Users, '/users', endpoint='users')
+api.add_resource(Bookshelves, '/bookshelves', endpoint='bookshelves')
 api.add_resource(Books, '/books', endpoint='books')
 api.add_resource(Authors, '/authors', endpoint='authors')
+api.add_resource(BookshelvesByID, '/bookshelves/<int:id>', endpoint='bookshelvesbyid')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

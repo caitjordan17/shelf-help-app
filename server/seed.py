@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Book, Author
+from models import db, Book, Author, Bookshelf, User, bookshelf_books
 
 fake = Faker()
 
@@ -16,8 +16,11 @@ with app.app_context():
     print("deleting rows in db...")
     Author.query.delete()
     Book.query.delete()
+    Bookshelf.query.delete()
+    User.query.delete()
     print("deleted...")
-    print("adding authors in db...")
+
+    print("adding authors to db...")
     crockett = Author(name="Crockett Johnson")
     margaret = Author(name="Margaret Wise Brown")
     philip = Author(name="Philip Stead")
@@ -30,7 +33,7 @@ with app.app_context():
     db.session.commit()
     print("added...")
 
-    print("adding books in db...")
+    print("adding books to db...")
     goodnight_moon = Book(title="Goodnight Moon", book_cover="https://m.media-amazon.com/images/I/81t-IstQ+ZL._AC_UF1000,1000_QL80_.jpg", author=margaret )
     purple_crayon = Book(title="Harold and the Purple Crayon", book_cover="https://m.media-amazon.com/images/I/81Wlh5OnMQL._AC_UF1000,1000_QL80_.jpg", author=crockett )
     sick_day = Book(title="Sick Day for Amos McGee", book_cover="https://m.media-amazon.com/images/I/71RqI2WUAzL._AC_UF1000,1000_QL80_.jpg", author=philip )
@@ -48,4 +51,31 @@ with app.app_context():
     db.session.commit()
     print("added...")
 
+    print("adding users to db...")
+    u1 = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
+    u2 = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
+    db.session.add_all([u1, u2])
+    db.session.commit()
+    print("added...")
+
+    print("adding bookshelves to db...")
+    b1 = Bookshelf(name="Davey's Favorites", books=[go_dogs, night_kitchen, mister_moon, sick_day], user=u1)
+    b2 = Bookshelf(name="Classic Picture Books", books=[goodnight_moon, little_island, alligators_all_around, ferdinand, go_dogs, night_kitchen,purple_crayon], user=u2)
+    b3 = Bookshelf(name="Loaned to Davey", books=[flotsam, tuesday, purple_crayon, goodnight_moon], user=u1)
+    db.session.add_all([b1, b2, b3])
+    db.session.commit()
+    print("added...")
+
     print("complete!")
+
+
+
+
+
+    # __________________________________
+    # TEMPLATES
+
+    #  = Author(name="")
+    #  = Book(title="", book_cover="", author= )
+    #  = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
+    #  = Bookshelf(name="", books=[], user=)
