@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import BrowseShelves from "./BrowseShelves";
 import MyShelves from "./MyShelves"
+import ShelfPage from "./ShelfPage";
 
 function App() {
   const [bookshelves, setBookshelves] = useState([])
@@ -14,12 +15,6 @@ function App() {
       .then((bookshelves) =>setBookshelves(bookshelves));
   }, []);
 
-  console.log("bookshelves_in_App:", bookshelves)
-
-  function handleClick(){
-    // take bshelf.id & nav to ShelfPage /bookshelf/<int:id>
-  }
-
   return(
      <Router>
         <div className="nav-bar">
@@ -27,14 +22,14 @@ function App() {
         </div>
         <div className="body-content">
           <Switch>
-            {/* <Route path="/">
-
+            <Route path="/my-shelves">
+              <MyShelves bookshelves={bookshelves} />
             </Route>
-            <Route path="/">
-
-            </Route> */}
-            <Route exact path="/">
-              <BrowseShelves bookshelves={bookshelves} handleClick={handleClick}/>
+            <Route exact path="/browse">
+              <BrowseShelves bookshelves={bookshelves} />
+            </Route>
+            <Route path="/browse/:id">
+              <ShelfPage />
             </Route>
           </Switch>
         </div>

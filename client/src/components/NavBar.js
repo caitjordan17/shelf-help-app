@@ -6,7 +6,7 @@ function NavBar(){
         <header className="header">
             <h1>ShelfHelp</h1>
             <nav className="navigation">
-                <NavLink className="navButton" exact to="/">Browse Shelves</NavLink>
+                <NavLink className="navButton" exact to="/browse">Browse Shelves</NavLink>
                 <NavLink className="navButton" exact to="/my_shelves">My Shelves</NavLink>
                 <NavLink className="navButton" exact to="/login">Login</NavLink>
             </nav>

@@ -11,7 +11,7 @@ body {
   margin: 0px
 }
 
-.app {
+/* .app {
   display: grid;
   grid-template-columns: repeat(5, 1fr, 2fr, 2fr, 2fr, 1fr);
   grid-auto-rows: minmax(100px, auto);
@@ -21,7 +21,7 @@ body {
     ". bt bt bt ."
     ". . rm . ."
     ". tb tb tb .";
-}
+} */
 
 /* --------------------------------------------------------------- */
 /*         FONTS         */
@@ -48,7 +48,7 @@ h2 {
 p {
   font-family: "Gill Sans", sans-serif;
   margin-top: 1px;
-  color: #9999C3;
+  color: #7B8CDE;
   font-size: 1rem;
   margin-left: 1rem;
   margin-bottom: 0px;
@@ -129,15 +129,40 @@ button {
   margin-left: 1rem;
 }
 
-/* --------------------------------------------------------------- */
-/*     SHELF PAGE CSS     */  
-
-.back {
+.details-button{
   margin-top: 2rem;
-  background-color: #746ae5;
-  color: #d6ece7;
-  font-size: 2rem;
+  background-color: #efede6;
+  color: #7B8CDE;
+  font-size: 1rem;
   font-family: "Gill Sans", sans-serif;
   font-weight: 200;
   border-radius: 5px;
+  margin-left: 1rem;
+}
+
+.link{
+  font-family: "Gill Sans", sans-serif;
+  margin-top: 1px;
+  color: #7B8CDE;
+  font-size: 1rem;
+  margin-left: 1rem;
+  margin-bottom: 0px;
+}
+
+/* --------------------------------------------------------------- */
+/*     SHELF PAGE CSS     */  
+
+#bookshelfCard {
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+}
+
+#book-list {
+  padding-top: 2rem;
+  display: inline-grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  width: 100%;
+
 }

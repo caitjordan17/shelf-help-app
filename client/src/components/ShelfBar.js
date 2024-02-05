@@ -1,19 +1,21 @@
 import React, {useState} from "react";
 import MoreButton from "./MoreButton";
 import Book from "./Book";
+import {Link} from "react-router-dom";
 
-function ShelfBar({bshelf, handleClick}){
+function ShelfBar({bshelf}){
     const [bookIndex, setBookIndex] = useState(0)
 
     const bookList = bshelf.books
         .slice(bookIndex, bookIndex + 4)
         .map((book) => (
-            <Book key={book.id} book={book} />
+            <Book className="bk-shelf-bar" key={book.id} book={book} />
         ))
 
     function handleClickMore(){
         setBookIndex((bookIndex) => (bookIndex + 4) % bshelf.books.length);
     }
+
 
     return(
         <div className="bar">
@@ -22,8 +24,9 @@ function ShelfBar({bshelf, handleClick}){
                     {bookList}
                     <MoreButton onClickMore={handleClickMore} />
                 </div>
-                <h2 onClick={handleClick} id={bshelf.id}>{bshelf.name}</h2>
+                <h2 id={bshelf.id}>{bshelf.name}</h2>
                 <p>created by {bshelf.user.username}</p>
+                <Link className="link"to={`/browse/${bshelf.id}`}>See more</Link>
             </div>
         </div>
     )

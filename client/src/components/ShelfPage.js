@@ -1,18 +1,30 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Book from "./Book";
-import { NavLink } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
-function ShelfPage({bookshelf, handleBackClick}){
-    
-    
+function ShelfPage(){
+    const [shelf, setShelf] = useState(null);
+    const { id } = useParams()
+
+    console.log("id:", id)
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:5555/bookshelves/${id}`)
+            .then(r => r.json())
+            .then(data => setShelf(data))
+    },[])
+
+    console.log(shelf)
+
     return(
-        <div className="bookshelfCard">
-            <NavLink className="navButton" exact to="/">Back</NavLink>
-            <h2>{bookshelf.name}</h2>
-            <p>created by {bookshelf.user.username}</p>
-            {bookshelf.books.map((book) => (
-                <Book book={book} key={book.id} />
-            ))}
+        <div id="bookshelfCard">
+            <h2 className="bk-h2">{shelf ? shelf.name : 'Loading....'}</h2>
+            <p>{shelf ? `created by ${shelf.user.username}` : 'Loading....'}</p>
+            <div id="book-list">
+                {shelf && shelf.books.map((book) => (
+                    <Book book={book} key={book.id} />
+                ))}
+            </div>
         </div>
     )
 }
