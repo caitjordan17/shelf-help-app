@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, session
 from flask_restful import Resource
 
 # Local imports
@@ -28,6 +28,18 @@ def delete_by_id(cls, id):
         db.session.commit()
         return make_response({}, 204)
     return make_response({"error": "item not found"}, 404)
+
+
+# @app.before_request
+# def check_if_logged_in():
+#     open_access_list = [
+#         'signup',
+#         'login',
+#         'bookshelves',
+#         'bookshelvesbyid'
+#     ]
+#     if (request.endpoint) not in open_access_list and (not session.get('user_id')):
+#         return {'error': '401 Unauthorized'}, 401
 
 
 @app.route('/')

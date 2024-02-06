@@ -53,7 +53,9 @@ with app.app_context():
 
     print("adding users to db...")
     u1 = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
+    u1.password_hash="pickles123"
     u2 = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
+    u2.password_hash="yellowbirds123"
     db.session.add_all([u1, u2])
     db.session.commit()
     print("added...")

@@ -15,6 +15,9 @@ function App() {
       .then((bookshelves) =>setBookshelves(bookshelves));
   }, []);
 
+  // if (!user) return <Login onLogin={setUser} />;
+  // const myShelves = bookshelves.filter((bookshelf.user_id == ))
+
   return(
      <Router>
         <div className="nav-bar">
