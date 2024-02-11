@@ -221,3 +221,31 @@ button{
   margin: 1rem;
   padding-top: .5rem;
 }
+
+#welcome-user{
+  padding: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #d6ece7;
+  font-size: x-large;
+  text-align: right;
+}
+
+#logout-btn{
+  font-size: xx-large;
+  font-weight: 280;
+  
+}
+
+button:hover{
+  background-color: #746ae5;
+  color: #d6ece7;
+  border-radius: 0%;
+}
+
+#errors{
+  padding: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #d6ece7;
+  font-size: small;
+  text-align: right;
+}

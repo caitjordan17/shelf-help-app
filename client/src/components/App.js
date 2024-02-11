@@ -8,6 +8,7 @@ import ShelfPage from "./ShelfPage";
 
 function App() {
   const [bookshelves, setBookshelves] = useState([])
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch("/bookshelves")
@@ -18,17 +19,25 @@ function App() {
   // if (!user) return <Login onLogin={setUser} />;
 
   // const myShelves = bookshelves.filter((bookshelf.user_id == ))
+  function handleLogout(){
+    fetch("/logout", { method: "DELETE" }).then((r) => {
+        if (r.ok) {
+          setUser(null);
+        }
+      });
+    }
+
 
   return(
      <Router>
         <div className="nav-bar">
-          <NavBar />
+          <NavBar user={user} handleLogout={handleLogout}/>
         </div>
         <div className="body-content">
           <Switch>
 
             <Route path="/my-shelves">
-              <MyShelves bookshelves={bookshelves} />
+              <MyShelves bookshelves={bookshelves} user={user}/>
             </Route>
 
             <Route exact path="/browse">
@@ -40,7 +49,7 @@ function App() {
             </Route>
 
             <Route path="/login">
-              <Login />
+              <Login setAppUser={setUser}/>
             </Route>
 
           </Switch>

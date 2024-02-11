@@ -100,8 +100,7 @@ class User(db.Model, SerializerMixin):
     @password_hash.setter
     def password_hash(self, password):
         password_hash = bcrypt.generate_password_hash(
-            password.encode('utf-8')
-        )
+            password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
 
     def authenticate(self, password):
@@ -109,11 +108,11 @@ class User(db.Model, SerializerMixin):
             self._password_hash, password.encode('utf-8')
         )
     
-    @validates('username')
-    def validate_username(self, key, entry):
-        if User.query.filter(User.username == entry).first() != None:
-                raise ValueError("Username Taken!")
-        return entry
+    # @validates('username')
+    # def validate_username(self, key, entry):
+    #     if User.query.filter(User.username == entry).first() != None:
+    #             raise ValueError("Username Taken!")
+    #     return entry
 
     def __repr__(self):
         return f'<ID: {self.id}, Username: {self.username}>'

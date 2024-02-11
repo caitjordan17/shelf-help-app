@@ -6,12 +6,14 @@
 from flask import Flask, request, make_response, session
 from flask_restful import Resource
 
+
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import db, Book, Author, Bookshelf, User, Bookshelf_book
+from models import db, Book, Author, Bookshelf, User
 
-# Views go here!
+app.secret_key = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
+
 
 def get_all(cls):
     items = [item.to_dict() for item in cls.query.all()]
@@ -65,25 +67,48 @@ class BookshelvesByID(Resource):
 class Users(Resource):
     def get(self):
         return make_response(get_all(User), 200)
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        user = User.query.filter(User.username == username).first()
+        if user and user.authenticate(password):
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 200)
+        return {'message': 'Invalid username or password'}, 401
+    
+class CheckSession(Resource):
+    def get(self):
+        if session.get('user_id'):
+            return make_response("session has user", 200)
+        #     user = User.query.filter(User.id == session['user_id']).first()
+        #     return make_response(user.to_dict(), 200)
+        
+        else:
+            return {'error': '401 Unauthorized'}, 401
+    
+class Logout(Resource):
+    def delete(self):
+        
+        if session.get('user_id'):
+            
+            session['user_id'] = None
+            
+            return {}, 204
+        
+        return {'error': '401 Unauthorized'}, 401
+
     
 api.add_resource(Users, '/users', endpoint='users')
 api.add_resource(Bookshelves, '/bookshelves', endpoint='bookshelves')
 api.add_resource(Books, '/books', endpoint='books')
 api.add_resource(BookshelvesByID, '/bookshelves/<int:id>', endpoint='bookshelvesbyid')
 api.add_resource(Authors, '/authors', endpoint='authors')
+api.add_resource(CheckSession, '/check_session', endpoint='check_session')
+api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(Logout, '/logout', endpoint='logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
-
-
-
-
-
-
-
-# class Authors(Resource):
-#     def get(self):
-#         return make_response(get_all(Author), 200)
-
-
-# api.add_resource(Authors, '/authors', endpoint='authors')

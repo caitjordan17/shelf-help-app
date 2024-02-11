@@ -1,16 +1,19 @@
 
 import React, {useState} from "react";
 
-function Login({onLogin}){
+function Login({setAppUser}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    
+
     
     function handleSubmit(e){
         e.preventDefault();
+        console.log(username, password)
         setIsLoading(true);
-        fetch("", {
+        fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -19,9 +22,10 @@ function Login({onLogin}){
         }).then((r) => {
             setIsLoading(false);
             if (r.ok) {
-                r.json().then((user) => onLogin(user));
+                r.json().then((user) => setAppUser(user))
+                .then(setErrors(false));
             } else {
-                r.json().then((err) => setErrors(err.erros));
+                r.json().then((err) => setErrors(true));
             }
         });
     }
@@ -56,7 +60,7 @@ function Login({onLogin}){
                     </button>
                 </div>
                 <div id="errors">
-                    {errors.error}
+                    {errors ? <h3>Username & Password do not match.</h3> : null}
                 </div>
             </form>
         </div>
