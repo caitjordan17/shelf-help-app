@@ -10,12 +10,13 @@ function App() {
   const [bookshelves, setBookshelves] = useState([])
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/bookshelves")
+    fetch("/bookshelves")
       .then((r) => r.json())
       .then((bookshelves) =>setBookshelves(bookshelves));
   }, []);
 
   // if (!user) return <Login onLogin={setUser} />;
+
   // const myShelves = bookshelves.filter((bookshelf.user_id == ))
 
   return(
@@ -25,15 +26,23 @@ function App() {
         </div>
         <div className="body-content">
           <Switch>
+
             <Route path="/my-shelves">
               <MyShelves bookshelves={bookshelves} />
             </Route>
+
             <Route exact path="/browse">
               <BrowseShelves bookshelves={bookshelves} />
             </Route>
+
             <Route path="/browse/:id">
               <ShelfPage />
             </Route>
+
+            <Route path="/login">
+              <Login />
+            </Route>
+
           </Switch>
         </div>
     </Router> 

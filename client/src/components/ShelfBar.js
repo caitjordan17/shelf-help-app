@@ -5,8 +5,11 @@ import {Link} from "react-router-dom";
 
 function ShelfBar({bshelf}){
     const [bookIndex, setBookIndex] = useState(0)
+    console.log("bshelf",bshelf)
+    console.log("bshelf.bookshelf_book", bshelf.bookshelf_book)
+    console.log("bshelf.name", bshelf.name)
 
-    const bookList = bshelf.books
+    const bookList = bshelf.bookshelf_book
         .slice(bookIndex, bookIndex + 4)
         .map((book) => (
             <Book className="bk-shelf-bar" key={book.id} book={book} />

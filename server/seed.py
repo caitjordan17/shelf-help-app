@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Book, Author, Bookshelf, User, bookshelf_books
+from models import db, Book, Author, Bookshelf, User, Bookshelf_book
 
 fake = Faker()
 
@@ -18,6 +18,7 @@ with app.app_context():
     Book.query.delete()
     Bookshelf.query.delete()
     User.query.delete()
+    Bookshelf_book.query.delete()
     print("deleted...")
 
     print("adding authors to db...")
@@ -61,10 +62,31 @@ with app.app_context():
     print("added...")
 
     print("adding bookshelves to db...")
-    b1 = Bookshelf(name="Davey's Favorites", books=[go_dogs, night_kitchen, mister_moon, sick_day], user=u1)
-    b2 = Bookshelf(name="Classic Picture Books", books=[goodnight_moon, little_island, alligators_all_around, ferdinand, go_dogs, night_kitchen,purple_crayon], user=u2)
-    b3 = Bookshelf(name="Loaned to Davey", books=[flotsam, tuesday, purple_crayon, goodnight_moon], user=u1)
+    b1 = Bookshelf(name="Davey's Favorites", user=u1)
+    b2 = Bookshelf(name="Classic Picture Books", user=u2)
+    b3 = Bookshelf(name="Loaned to Davey", user=u1)
     db.session.add_all([b1, b2, b3])
+    db.session.commit()
+    print("added...")
+
+    print("adding bookshelf_books to db...")
+    bb1 = Bookshelf_book(book=goodnight_moon, bookshelf=b1)
+    bb2 = Bookshelf_book(book=go_dogs, bookshelf=b1 )
+    bb3 = Bookshelf_book(book=ferdinand, bookshelf=b1 )
+    bb4 = Bookshelf_book(book=flotsam, bookshelf=b1 )
+    bb5 = Bookshelf_book(book=little_island, bookshelf=b1 )
+    bb6 = Bookshelf_book(book=night_kitchen, bookshelf=b1 )
+    bb7 = Bookshelf_book(book=alligators_all_around, bookshelf=b1 )
+    bb8 = Bookshelf_book(book=sick_day, bookshelf=b2 )
+    bb0 = Bookshelf_book(book=goodnight_moon, bookshelf=b2 )
+    bb33 = Bookshelf_book(book=purple_crayon, bookshelf=b2 )
+    bb44 = Bookshelf_book(book=little_island, bookshelf=b2 )
+    bb66 = Bookshelf_book(book=mister_moon, bookshelf=b2 )
+    bb88 = Bookshelf_book(book=goodnight_moon, bookshelf=b3 )
+    bb31 = Bookshelf_book(book=ferdinand, bookshelf=b3 )
+    bb35 = Bookshelf_book(book=go_dogs, bookshelf=b3 )
+    bb36 = Bookshelf_book(book=purple_crayon, bookshelf=b3 )
+    db.session.add_all([bb1,bb2,bb3,bb4,bb5,bb6,bb7,bb8,bb0,bb33,bb44,bb66,bb88,bb31,bb35,bb36])
     db.session.commit()
     print("added...")
 
@@ -80,4 +102,5 @@ with app.app_context():
     #  = Author(name="")
     #  = Book(title="", book_cover="", author= )
     #  = User(username=f'{fake.first_name()}{fake.random_int(min=11, max=999)}')
-    #  = Bookshelf(name="", books=[], user=)
+    #  = Bookshelf(name="", user=)
+    #  = Bookshelf_book(book=, bookshelf= )

@@ -9,7 +9,7 @@ function ShelfPage(){
     console.log("id:", id)
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:5555/bookshelves/${id}`)
+        fetch(`/bookshelves/${id}`) 
             .then(r => r.json())
             .then(data => setShelf(data))
     },[])
@@ -21,7 +21,7 @@ function ShelfPage(){
             <h2 className="bk-h2">{shelf ? shelf.name : 'Loading....'}</h2>
             <p>{shelf ? `created by ${shelf.user.username}` : 'Loading....'}</p>
             <div id="book-list">
-                {shelf && shelf.books.map((book) => (
+                {shelf && shelf.bookshelf_book.map((book) => (
                     <Book book={book} key={book.id} />
                 ))}
             </div>

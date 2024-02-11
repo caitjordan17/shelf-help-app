@@ -6,63 +6,90 @@ from sqlalchemy.orm import validates
 from config import db, bcrypt
 
 
-# Models go here!
-
-bookshelf_books = db.Table('bookshelf_books',
-                            db.Column('book_id', db.Integer, db.ForeignKey('books.id'), primary_key=True),
-                            db.Column('bookshelf_id', db.Integer, db.ForeignKey('bookshelves.id'), primary_key=True)
-)
-
 class Book(db.Model, SerializerMixin):
     __tablename__ = "books"
 
-    serialize_rules = ('-author.books', '-bookshelves',)
+    serialize_rules = ('-author.books', '-bookshelf_book.id', 
+                       '-bookshelf_book.book_id',) #done
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     book_cover = db.Column(db.String, nullable=False)
+   
+#   relationships
     author = db.relationship('Author', back_populates='books')
-    author_id = db.Column(db.String, db.ForeignKey('authors.id'))
-    bookshelves = db.relationship('Bookshelf', secondary=bookshelf_books, back_populates='books')
+    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
+    bookshelf_book = db.relationship('Bookshelf_book', 
+                                     back_populates='book', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<ID: {self.id}, Title: {self.title}>'
 
+
 class Author(db.Model, SerializerMixin):
     __tablename__ = "authors"
 
-    serialize_rules = ('-books.author',)
+    serialize_rules = ('-books.bookshelf_book','-books.author',
+                       '-books.author_id','-books.book_cover',) #done
+
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    books = db.relationship('Book', back_populates='author')
+    
+#   relationships
+    books = db.relationship('Book', back_populates='author', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<ID: {self.id}, Name: {self.name}>'
     
+
 class Bookshelf(db.Model, SerializerMixin):
     __tablename__ = "bookshelves"
 
-    serialize_rules = ('-user.bookshelves',)
+    serialize_rules = ('-user_id', '-user._password_hash', '-user.bookshelves', '-bookshelf_book.bookshelf', '-bookshelf_book.id', 
+                       '-bookshelf_book.bookshelf_id', '-bookshelf_book.book.author.books',
+                       '-bookshelf_book.book.author_id','-bookshelf_book.book.bookshelf_book', 
+                       '-bookshelf_book.book_id',) #done
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    books = db.relationship('Book', secondary=bookshelf_books, back_populates='bookshelves')
+    
+#   relationships
     user = db.relationship('User', back_populates='bookshelves')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    bookshelf_book = db.relationship('Bookshelf_book', back_populates='bookshelf', 
+                                     cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f'<ID: {self.id}, Name: {self.name}>'
+        return f'<ID: {self.id}, Name: {self.name}> '
 
+# make name editable
+
+class Bookshelf_book(db.Model, SerializerMixin):
+    __tablename__ = "bookshelf_books"
+    id = db.Column(db.Integer, primary_key=True)
+
+#   relationships
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+    book = db.relationship('Book', back_populates='bookshelf_book')
+    bookshelf_id = db.Column(db.Integer, db.ForeignKey('bookshelves.id'))
+    bookshelf = db.relationship('Bookshelf', back_populates='bookshelf_book')
+
+    def __repr__(self):
+        return f'<ID: {self.id}, {self.book_id}, {self.bookshelf_id}> '
 
 class User(db.Model, SerializerMixin):
     __tablename__= "users"
 
-    serialize_rules = ('-bookshelves.user','-bookshelves.books',)
+    serialize_rules = ('-bookshelves.user', '-bookshelves.bookshelf_book', 
+                       '-bookshelves.user_id', '-_password_hash',) #done #remove '-_password_hash', if need to see them
+    # serialize_rules = ('-bookshelves',)
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
-    bookshelves = db.relationship('Bookshelf', back_populates='user')
+    
+#   relationships
+    bookshelves = db.relationship('Bookshelf', back_populates='user', cascade='all, delete-orphan')
 
     _password_hash = db.Column(db.String)
 

@@ -166,3 +166,58 @@ button {
   width: 100%;
 
 }
+
+/* --------------------------------------------------------------- */
+/*     LOGIN CSS     */  
+
+#username-input{
+  margin: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #b0d4c6;
+}
+
+#password-input{
+  margin: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #b0d4c6;
+}
+
+#login-header{
+  margin: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #d6ece7;
+  font-size: x-large;
+}
+
+#password{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
+
+#username{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
+
+button{
+  background-color: #77b59c;
+  color: #d6ece7;
+  font-size: x-large;
+  margin: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  border-radius: 10%;
+}
+
+#login-div{
+  width: 20rem;
+  background-color: #746ae5;
+  text-align: center;
+  margin: 1rem;
+  padding-top: .5rem;
+}
