@@ -62,7 +62,10 @@ class Bookshelves(Resource):
     
 class BookshelvesByID(Resource):
     def get(self, id):
-        return make_response(get_by_id(Bookshelf, id))
+        return make_response(get_by_id(Bookshelf, id), 200)
+    
+    def delete(self, id):
+        return delete_by_id(Bookshelf, id)
     
 class Users(Resource):
     def get(self):
@@ -75,12 +78,15 @@ class Login(Resource):
         password = data.get('password')
         user = User.query.filter(User.username == username).first()
         if user and user.authenticate(password):
+            print(user)
             session['user_id'] = user.id
+            print(session)
             return make_response(user.to_dict(), 200)
         return {'message': 'Invalid username or password'}, 401
     
 class CheckSession(Resource):
     def get(self):
+        print("in checksession", session)
         if session.get('user_id'):
             return make_response("session has user", 200)
         #     user = User.query.filter(User.id == session['user_id']).first()

@@ -9,8 +9,7 @@ from config import db, bcrypt
 class Book(db.Model, SerializerMixin):
     __tablename__ = "books"
 
-    serialize_rules = ('-author.books', '-bookshelf_book.id', 
-                       '-bookshelf_book.book_id',) #done
+    serialize_rules = ('-author.books', '-author.id', '-bookshelf_book',) #done
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)

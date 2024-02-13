@@ -10,15 +10,25 @@ function App() {
   const [bookshelves, setBookshelves] = useState([])
   const [user, setUser] = useState(null);
 
+
   useEffect(() => {
     fetch("/bookshelves")
       .then((r) => r.json())
       .then((bookshelves) =>setBookshelves(bookshelves));
   }, []);
 
-  // if (!user) return <Login onLogin={setUser} />;
+  function handleAddShelf(){
 
-  // const myShelves = bookshelves.filter((bookshelf.user_id == ))
+  }
+
+  function handleDeleteShelf(id){
+    fetch(`/bookshelves/${id}`, {method: "DELETE"})
+    const filteredBookshelves = bookshelves.filter((bookshelf) => {
+      return bookshelf.id != id;
+    })
+    setBookshelves(filteredBookshelves)
+  }
+
   function handleLogout(){
     fetch("/logout", { method: "DELETE" }).then((r) => {
         if (r.ok) {
@@ -27,6 +37,7 @@ function App() {
       });
     }
 
+  const userShelves = user ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) : null
 
   return(
      <Router>
@@ -37,7 +48,8 @@ function App() {
           <Switch>
 
             <Route path="/my-shelves">
-              <MyShelves bookshelves={bookshelves} user={user}/>
+              <MyShelves userShelves={userShelves} user={user} 
+              handleAddShelf={handleAddShelf} handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
             <Route exact path="/browse">
@@ -45,7 +57,7 @@ function App() {
             </Route>
 
             <Route path="/browse/:id">
-              <ShelfPage />
+              <ShelfPage handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
             <Route path="/login">

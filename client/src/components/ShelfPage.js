@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Book from "./Book";
 import { useParams, Link } from "react-router-dom";
 
-function ShelfPage(){
+function ShelfPage({handleDeleteShelf}){
     const [shelf, setShelf] = useState(null);
     const { id } = useParams()
 
@@ -14,7 +14,12 @@ function ShelfPage(){
             .then(data => setShelf(data))
     },[])
 
-    console.log(shelf)
+    function onDeleteShelf(){
+        console.log("Deleting bookshelf with ID:", id)
+        handleDeleteShelf(id)
+        console.log("Deleted")
+        setShelf(null)
+    }
 
     return(
         <div id="bookshelfCard">
@@ -24,6 +29,8 @@ function ShelfPage(){
                 {shelf && shelf.bookshelf_book.map((book) => (
                     <Book book={book} key={book.id} />
                 ))}
+            {shelf ? <button onClick={onDeleteShelf}>Delete Shelf</button> : null}
+            <Link className="link"to={`/browse`}>See more</Link>
             </div>
         </div>
     )
