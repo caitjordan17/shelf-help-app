@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import BrowseShelves from "./BrowseShelves";
-import MyShelves from "./MyShelves"
+import MyShelves from "./MyShelves";
+import BookPage from "./BookPage";
 import ShelfPage from "./ShelfPage";
+import AddBook from "./AddBook";
 
 function App() {
   const [bookshelves, setBookshelves] = useState([])
@@ -52,16 +54,24 @@ function App() {
               handleAddShelf={handleAddShelf} handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
-            <Route exact path="/browse">
+            <Route exact path="/browse-shelves">
               <BrowseShelves bookshelves={bookshelves} />
             </Route>
 
-            <Route path="/browse/:id">
+            <Route path="/browse-shelves/:id">
               <ShelfPage handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
             <Route path="/login">
               <Login setAppUser={setUser}/>
+            </Route>
+
+            <Route path="/browse-books/add">
+              <AddBook />
+            </Route>
+
+            <Route exact path="/browse-books">
+              <BookPage />
             </Route>
 
           </Switch>

@@ -12,7 +12,7 @@ function ShelfBar({bshelf}){
     const bookList = bshelf.bookshelf_book
         .slice(bookIndex, bookIndex + 4)
         .map((book) => (
-            <Book className="bk-shelf-bar" key={book.id} book={book} />
+            <Book className="bk-shelf-bar" key={book.id} book={book.book} />
         ))
 
     function handleClickMore(){

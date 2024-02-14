@@ -5,6 +5,8 @@
 # Remote library imports
 from flask import Flask, request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
+
 
 
 # Local imports
@@ -51,6 +53,31 @@ def index():
 class Books(Resource):
     def get(self):
         return make_response(get_all(Book), 200)
+    
+    def post(self):
+        data = request.get_json()
+        author_added = data.get('author')
+        author_check = Author.query.filter(Author.name == author_added).first()
+        
+        if author_check:
+            author = author_check
+        else:
+            author = Author(name=author_added)
+            db.session.add(author)
+            db.session.commit()
+        
+        new_book = Book(
+            title=data.get('title'),
+            book_cover=data.get('bookCover'),
+            author=author
+        )
+        try:
+            db.session.add(new_book)
+            db.session.commit()
+            return {'message': 'Book successfully added'}, 201
+        except IntegrityError:
+            return {'error': 'Unprocessable Content'}, 422
+
     
 class Authors(Resource):
     def get(self):

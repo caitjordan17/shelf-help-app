@@ -39,7 +39,7 @@ h1 {
 
 h2 { 
   font-family: "Gill Sans", sans-serif;
-  margin-bottom: 1px;
+  margin-bottom: 10px;
   color: #7B8CDE;
   font-size: 2rem;
   margin-left: 1rem;
@@ -53,6 +53,8 @@ p {
   margin-left: 1rem;
   margin-bottom: 0px;
 }
+
+
 
 /* --------------------------------------------------------------- */
 /*     NAV BAR CSS     */
@@ -211,7 +213,6 @@ button{
   font-size: x-large;
   margin: 1rem;
   font-family: "Gill Sans", sans-serif;
-  border-radius: 10%;
 }
 
 #login-div{
@@ -248,4 +249,45 @@ button:hover{
   color: #d6ece7;
   font-size: small;
   text-align: right;
+}
+
+/* --------------------------------------------------------------- */
+/*     ADD BK CSS     */  
+
+#add-books-btn{
+  background-color: #77b59c;
+  padding: .5rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #d6ece7;
+}
+
+#add-books-btn:hover{
+  background-color: #746ae5;
+  color: #d6ece7;
+  padding: .5rem;
+  font-family: "Gill Sans", sans-serif;
+}
+
+#title-input{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
+
+#cover-input{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
+
+#author-input{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
 }

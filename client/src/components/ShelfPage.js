@@ -27,10 +27,10 @@ function ShelfPage({handleDeleteShelf}){
             <p>{shelf ? `created by ${shelf.user.username}` : 'Loading....'}</p>
             <div id="book-list">
                 {shelf && shelf.bookshelf_book.map((book) => (
-                    <Book book={book} key={book.id} />
+                    <Book book={book.book} key={book.id} />
                 ))}
             {shelf ? <button onClick={onDeleteShelf}>Delete Shelf</button> : null}
-            <Link className="link"to={`/browse`}>See more</Link>
+            <Link className="link"to={`/browse-shelves`}>See more</Link>
             </div>
         </div>
     )
