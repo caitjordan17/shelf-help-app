@@ -1,17 +1,19 @@
 import React, {useState} from "react";
 import ShelfBar from "./ShelfBar";
+import AddShelf from "./AddShelf";
 
-function MyShelves({userShelves, handleAddShelf}){
-
-    console.log("usershelves in myshelves:", userShelves)
+function MyShelves({userShelves, handleAddShelf, user}){
     return(
         <div>
-            {userShelves 
-                ? <button onClick={handleAddShelf}>Add Shelf</button> 
-                : <h2> Please Login to View MyShelves </h2>}
-            {userShelves ? userShelves.map((bshelf) => (
-                <ShelfBar bshelf={bshelf} key={bshelf.id}/>
-            )) : null}
+            { userShelves ? (
+                <div>
+                    <AddShelf user={user.username} handleAddShelf={handleAddShelf}/>
+                    {userShelves.map((bshelf) => (
+                        <ShelfBar bshelf={bshelf} key={bshelf.id} />
+                    ))}
+                </div>
+                ) : (<h2> Please Login to View MyShelves </h2>)
+            }
         </div>
     )
 }

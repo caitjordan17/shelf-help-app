@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import Book from "./Book";
-import {Link} from "react-router-dom";
 import AddBook from "./AddBook";
 
-function BookPage(){
+function BookPage({}){
     const [books, setBooks] = useState([])
 
     useEffect(() => {
@@ -13,14 +12,12 @@ function BookPage(){
     }, []);
 
     function onAddBook(bookObj){
-        setBooks(books.push(bookObj))
-        console.log("books after push", books)
+        setBooks([...books, bookObj]);
     }
 
     return(
         <div id="bookshelfCard">
             <h2 className="bk-h2"> All Books </h2>
-            <Link className="link" id="add-books-btn" to={`/browse-books/add`}> Add a book </Link>
             <AddBook onAddBook={onAddBook}/>
             <div id="book-list">
                 {books ? books.map((book) => (

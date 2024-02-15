@@ -1,62 +1,66 @@
 import React, {useState} from "react";
-
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 
 function AddBook({onAddBook}){
-    const [title, setTitle] = useState("");
-    const [bookCover, setBookCover] = useState("");
-    const [author, setAuthor] = useState("");
-    const [isLoading, setIsLoading] = useState("");
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        // console.log({ title, book_cover, author });
-        setIsLoading(true);
-        let newBook = { title, bookCover, author };
-    
-        fetch("/books", {
-          method: "POST",
-          headers: {
-            "Content-Type": "Application/JSON",
-          },
-          body: JSON.stringify(newBook),
-        }).then((r) => {
-            setIsLoading(false);
-            if (r.ok) {
-                r.json().then((book) => onAddBook(book))
-            } else {
+    const formSchema = yup.object().shape({
+        title: yup.string().required("Book must have title"),
+        bookCover: yup.string().url().required("Book must have book cover url"),
+        author: yup.string().required("Book must have author")
+    });
 
-            }
-        })
-    };
+    const formik = useFormik({
+        initialValues: {
+          title:"",
+          bookCover:"",
+          author:""
+        },
+
+        validationSchema: formSchema,
+
+        onSubmit: (values, {resetForm}) => {
+            fetch("/books", {
+            method: "POST",
+            headers: {
+                "Content-Type": "Application/JSON",
+            },
+            body: JSON.stringify(values),
+            }).then((r) => r.json())
+            .then((newBook) => {
+                onAddBook(newBook)
+                resetForm();
+            })
+        }
+    });
 
 
     return(
         <div className="new-book-form">
-            <h2> New Book </h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <input 
                     id="title-input"
                     type="text"
                     name="title"
-                    value={title}
+                    value={formik.values.title}
                     placeholder="Book title"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={formik.handleChange}
                 />
                 <input 
                     id="cover-input"
                     type="text"
                     name="bookCover"
-                    value={bookCover}
+                    value={formik.values.bookCover}
                     placeholder="Book cover"
-                    onChange={(e) => setBookCover(e.target.value)}
+                    onChange={formik.handleChange}
                 />
                 <input 
                     id="author-input"
                     type="text"
                     name="author"
-                    value={author}
+                    value={formik.values.author}
                     placeholder="Book author"
-                    onChange={(e) => setAuthor(e.target.value)}
+                    onChange={formik.handleChange}
                 />
                 <button type="submit">Add Book</button>
             </form>
@@ -66,3 +70,4 @@ function AddBook({onAddBook}){
 }
 
 export default AddBook;
+

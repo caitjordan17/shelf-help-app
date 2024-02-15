@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from 'formik';
 import * as yup from "yup";
 
-function AddShelf({onAddNewBookshelf}){
+function AddShelf({onAddNewBookshelf, user}){
     
     const formSchema = yup.object().shape({
         name: yup.string().required("Bookshelf must have a name").max(50, "Bookshelf name cannot exceed 50 characters"),
@@ -11,6 +11,7 @@ function AddShelf({onAddNewBookshelf}){
     const formik = useFormik({
         initialValues: {
         name: "",
+        username: user
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
@@ -27,17 +28,17 @@ function AddShelf({onAddNewBookshelf}){
 
     
     return(
-        <div>
-            <form className="new-bookcase">
-            <label htmlFor="name">New Bookshelf Name:</label>
+        <div className="new-bookshelf">
+            <form>
                 <input
                     type="text"
-                    id="name"
+                    id="new-bkshelf-title"
+                    placeholder="Bookshelf Name"
                     autoComplete="off"
                     onChange={formik.handleChange}
                     value={formik.values.name}/>
                 <p className="errors">{formik.errors.name}</p>
-                <button type="submit">Submit</button>
+                <button type="new-bkshelf-submit">Add New Bookshelf</button>
             </form>
         </div>
     )

@@ -74,7 +74,7 @@ class Books(Resource):
         try:
             db.session.add(new_book)
             db.session.commit()
-            return {'message': 'Book successfully added'}, 201
+            return make_response(new_book.to_dict(), 201)
         except IntegrityError:
             return {'error': 'Unprocessable Content'}, 422
 

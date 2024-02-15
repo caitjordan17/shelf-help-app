@@ -11,6 +11,8 @@ import AddBook from "./AddBook";
 function App() {
   const [bookshelves, setBookshelves] = useState([])
   const [user, setUser] = useState(null);
+  const [booksForAdding, setBooksForAdding] = useState([])
+  const [loggedIn, setLoggedIn] = useState(false)
 
 
   useEffect(() => {
@@ -35,23 +37,29 @@ function App() {
     fetch("/logout", { method: "DELETE" }).then((r) => {
         if (r.ok) {
           setUser(null);
+          setLoggedIn(false)
         }
       });
     }
+
+
 
   const userShelves = user ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) : null
 
   return(
      <Router>
         <div className="nav-bar">
-          <NavBar user={user} handleLogout={handleLogout}/>
+          <NavBar user={user} handleLogout={handleLogout} />
         </div>
         <div className="body-content">
           <Switch>
 
             <Route path="/my-shelves">
-              <MyShelves userShelves={userShelves} user={user} 
-              handleAddShelf={handleAddShelf} handleDeleteShelf={handleDeleteShelf}/>
+              <MyShelves 
+                userShelves={userShelves} 
+                user={user} 
+                handleAddShelf={handleAddShelf} 
+                handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
             <Route exact path="/browse-shelves">
@@ -63,7 +71,7 @@ function App() {
             </Route>
 
             <Route path="/login">
-              <Login setAppUser={setUser}/>
+              <Login setAppUser={setUser} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
             </Route>
 
             <Route path="/browse-books/add">
@@ -71,7 +79,7 @@ function App() {
             </Route>
 
             <Route exact path="/browse-books">
-              <BookPage />
+              <BookPage user={user}/>
             </Route>
 
           </Switch>
