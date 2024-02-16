@@ -11,7 +11,6 @@ import AddBook from "./AddBook";
 function App() {
   const [bookshelves, setBookshelves] = useState([])
   const [user, setUser] = useState(null);
-  const [booksForAdding, setBooksForAdding] = useState([])
   const [loggedIn, setLoggedIn] = useState(false)
 
 
@@ -19,10 +18,11 @@ function App() {
     fetch("/bookshelves")
       .then((r) => r.json())
       .then((bookshelves) =>setBookshelves(bookshelves));
-  }, []);
 
-  function handleAddShelf(){
+    }, []);
 
+  function handleAddShelf(newShelf){
+    setBookshelves([...bookshelves, newShelf])
   }
 
   function handleDeleteShelf(id){
@@ -42,9 +42,20 @@ function App() {
       });
     }
 
+  console.log("user in app:", user.username)
 
+  if (user) {
+    console.log("tis Darcy")
+  } else {
+    console.log("tis Wickham")
+  }
 
-  const userShelves = user ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) : null
+  console.log("bookshelves before usershelves:", bookshelves)
+  const userShelves = user && user.username 
+    ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) 
+    : null
+
+  console.log("userShelves:", userShelves)
 
   return(
      <Router>

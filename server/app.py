@@ -6,15 +6,13 @@
 from flask import Flask, request, make_response, session
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-
-
-
 # Local imports
 from config import app, db, api
 # Add your model imports
 from models import db, Book, Author, Bookshelf, User
 
-app.secret_key = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
+
+app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
 
 
 def get_all(cls):
@@ -33,32 +31,21 @@ def delete_by_id(cls, id):
         return make_response({}, 204)
     return make_response({"error": "item not found"}, 404)
 
-
-# @app.before_request
-# def check_if_logged_in():
-#     open_access_list = [
-#         'signup',
-#         'login',
-#         'bookshelves',
-#         'bookshelvesbyid'
-#     ]
-#     if (request.endpoint) not in open_access_list and (not session.get('user_id')):
-#         return {'error': '401 Unauthorized'}, 401
-
-
 @app.route('/')
 def index():
     return '<h1>BookShelf BackEnd</h1>'
 
 class Books(Resource):
     def get(self):
+        print(session)
         return make_response(get_all(Book), 200)
     
     def post(self):
         data = request.get_json()
         author_added = data.get('author')
         author_check = Author.query.filter(Author.name == author_added).first()
-        
+        print(session)
+
         if author_check:
             author = author_check
         else:
@@ -81,18 +68,38 @@ class Books(Resource):
     
 class Authors(Resource):
     def get(self):
+        print(session)
         return make_response(get_all(Author), 200)
     
 class Bookshelves(Resource):
     def get(self):
+        print(session)        
         return make_response(get_all(Bookshelf), 200)
     
 class BookshelvesByID(Resource):
     def get(self, id):
+        print(session)
         return make_response(get_by_id(Bookshelf, id), 200)
     
     def delete(self, id):
         return delete_by_id(Bookshelf, id)
+    
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        user = User.query.filter(User.username == username).first()
+        new_bookshelf = Bookshelf(
+            name = data.get('name'),
+            user = user,
+            bookshelf_book = []
+        )
+        try:
+            db.session.add(new_bookshelf)
+            db.session.commit()
+            return make_response(new_bookshelf.to_dict(), 201)
+        except IntegrityError:
+            return {'error': 'Unprocessable Content'}, 422
+
     
 class Users(Resource):
     def get(self):
@@ -107,21 +114,23 @@ class Login(Resource):
         if user and user.authenticate(password):
             print(user)
             session['user_id'] = user.id
+            session.permanent = True
             print(session)
-            return make_response(user.to_dict(), 200)
+            response = make_response(user.to_dict(), 200)
+            return response
         return {'message': 'Invalid username or password'}, 401
     
 class CheckSession(Resource):
     def get(self):
         print("in checksession", session)
-        if session.get('user_id'):
-            return make_response("session has user", 200)
-        #     user = User.query.filter(User.id == session['user_id']).first()
-        #     return make_response(user.to_dict(), 200)
+        if 'user_id' in session:
+            return {'message': 'Authenticated user'},200
         
         else:
             return {'error': '401 Unauthorized'}, 401
-    
+
+
+
 class Logout(Resource):
     def delete(self):
         
@@ -145,3 +154,9 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
+
+
+
+    # FIGURE OUT COOKIES!!!!!!!! 
+    # think it's impacted newshelf

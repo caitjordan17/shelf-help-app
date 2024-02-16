@@ -64,7 +64,7 @@ function AddBook({onAddBook}){
                 />
                 <button type="submit">Add Book</button>
             </form>
-
+            <p className="errors">{formik.errors.name}</p>
         </div>
     )
 }

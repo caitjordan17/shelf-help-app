@@ -297,7 +297,7 @@ button:hover{
 /* --------------------------------------------------------------- */
 /*     ADD SHELF CSS     */  
 
-#new-bkshelf-title{
+#new-bkshelf-name{
   background-color: #ffffff;
   border: none;
   font-size: large;
@@ -317,4 +317,11 @@ button:hover{
   color: #d6ece7;
   padding: .5rem;
   font-family: "Gill Sans", sans-serif;
+}
+
+#my-shelves-div{
+  margin: 1rem;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
 }
