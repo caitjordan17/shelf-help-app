@@ -325,3 +325,7 @@ button:hover{
   gap: 10px;
   width: 100%;
 }
+
+.clicked{
+  background-color: rgba(115, 115, 115, 0.5);
+}

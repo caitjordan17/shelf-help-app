@@ -7,19 +7,30 @@ import MyShelves from "./MyShelves";
 import BookPage from "./BookPage";
 import ShelfPage from "./ShelfPage";
 import AddBook from "./AddBook";
+import EditShelf from "./EditShelf";
 
 function App() {
   const [bookshelves, setBookshelves] = useState([])
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({username: ""});
   const [loggedIn, setLoggedIn] = useState(false)
 
-
+  console.log("USER:",user)
   useEffect(() => {
     fetch("/bookshelves")
       .then((r) => r.json())
       .then((bookshelves) =>setBookshelves(bookshelves));
-
     }, []);
+
+    useEffect(() => {
+      fetch("/check_session")
+        .then((r) => {
+          if (r.ok) {
+            r.json().then((user) => {
+              setUser(user);
+            })}
+        })
+    }, []);
+      
 
   function handleAddShelf(newShelf){
     setBookshelves([...bookshelves, newShelf])
@@ -42,20 +53,12 @@ function App() {
       });
     }
 
-  console.log("user in app:", user.username)
-
-  if (user) {
-    console.log("tis Darcy")
-  } else {
-    console.log("tis Wickham")
-  }
-
-  console.log("bookshelves before usershelves:", bookshelves)
-  const userShelves = user && user.username 
+  // console.log("bookshelves before usershelves:", bookshelves[0])
+  const userShelves = user
     ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) 
     : null
 
-  console.log("userShelves:", userShelves)
+  // console.log("userShelves:", userShelves)
 
   return(
      <Router>
@@ -74,11 +77,13 @@ function App() {
             </Route>
 
             <Route exact path="/browse-shelves">
-              <BrowseShelves bookshelves={bookshelves} />
+              <BrowseShelves user={user} bookshelves={bookshelves} />
             </Route>
 
-            <Route path="/browse-shelves/:id">
-              <ShelfPage handleDeleteShelf={handleDeleteShelf}/>
+            <Route exact path="/browse-shelves/:id">
+              <ShelfPage 
+                user={user} 
+                handleDeleteShelf={handleDeleteShelf}/>
             </Route>
 
             <Route path="/login">
@@ -91,6 +96,10 @@ function App() {
 
             <Route exact path="/browse-books">
               <BookPage user={user}/>
+            </Route>
+
+            <Route path = "/bookshelves/:id/edit-shelf">
+              <EditShelf />
             </Route>
 
           </Switch>

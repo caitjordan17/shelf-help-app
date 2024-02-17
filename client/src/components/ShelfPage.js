@@ -2,17 +2,22 @@ import React, {useState, useEffect} from "react";
 import Book from "./Book";
 import { useParams, Link } from "react-router-dom";
 
-function ShelfPage({handleDeleteShelf}){
+function ShelfPage({handleDeleteShelf, user}){
     const [shelf, setShelf] = useState(null);
     const { id } = useParams()
 
-    console.log("id:", id)
 
     useEffect(() => {
         fetch(`/bookshelves/${id}`) 
             .then(r => r.json())
             .then(data => setShelf(data))
     },[])
+
+    let authorizedToEdit = false
+
+    if (user != null && shelf && shelf.user != null){
+        authorizedToEdit = shelf.user.username == user.username
+    }
 
     function onDeleteShelf(){
         console.log("Deleting bookshelf with ID:", id)
@@ -29,8 +34,9 @@ function ShelfPage({handleDeleteShelf}){
                 {shelf && shelf.bookshelf_book.map((book) => (
                     <Book book={book.book} key={book.id} />
                 ))}
-            {shelf ? <button onClick={onDeleteShelf}>Delete Shelf</button> : null}
+            {authorizedToEdit ? <button onClick={onDeleteShelf}>Delete Shelf</button> : null}
             <Link className="link"to={`/browse-shelves`}>See more</Link>
+            {authorizedToEdit ? <Link className="link"to={`/bookshelves/${id}/edit-shelf`}>Add more books</Link> : null}
             </div>
         </div>
     )

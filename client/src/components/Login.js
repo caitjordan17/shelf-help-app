@@ -23,7 +23,7 @@ function Login({setAppUser, loggedIn, setLoggedIn}){
             setIsLoading(false);
             if (r.ok) {
                 r.json().then((user) => {
-                    setAppUser(user);
+                    // setAppUser(user);
                     setLoggedIn(true);
                     setUsername("");
                     setPassword("");

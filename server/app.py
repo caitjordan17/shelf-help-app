@@ -31,6 +31,10 @@ def delete_by_id(cls, id):
         return make_response({}, 204)
     return make_response({"error": "item not found"}, 404)
 
+def get_by_user(cls, uid):
+    items = cls.query.filter(cls.user.id == id).all()
+    return items
+
 @app.route('/')
 def index():
     return '<h1>BookShelf BackEnd</h1>'
@@ -38,6 +42,7 @@ def index():
 class Books(Resource):
     def get(self):
         print(session)
+
         return make_response(get_all(Book), 200)
     
     def post(self):
@@ -65,7 +70,6 @@ class Books(Resource):
         except IntegrityError:
             return {'error': 'Unprocessable Content'}, 422
 
-    
 class Authors(Resource):
     def get(self):
         print(session)
@@ -75,14 +79,6 @@ class Bookshelves(Resource):
     def get(self):
         print(session)        
         return make_response(get_all(Bookshelf), 200)
-    
-class BookshelvesByID(Resource):
-    def get(self, id):
-        print(session)
-        return make_response(get_by_id(Bookshelf, id), 200)
-    
-    def delete(self, id):
-        return delete_by_id(Bookshelf, id)
     
     def post(self):
         data = request.get_json()
@@ -99,12 +95,27 @@ class BookshelvesByID(Resource):
             return make_response(new_bookshelf.to_dict(), 201)
         except IntegrityError:
             return {'error': 'Unprocessable Content'}, 422
+    
+class BookshelvesByID(Resource):
+    def get(self, id):
+        print(session)
+        return make_response(get_by_id(Bookshelf, id), 200)
+    
+    def delete(self, id):
+        return delete_by_id(Bookshelf, id)
 
     
 class Users(Resource):
     def get(self):
         return make_response(get_all(User), 200)
-
+    
+class CurrentUser(Resource):
+    def get(self):
+        current_session = [session]
+        print(current_session)
+        current_user = User.query.filter(User.id == current_session.user_id).first()
+        return make_response(current_session, 200)
+    
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -122,13 +133,10 @@ class Login(Resource):
     
 class CheckSession(Resource):
     def get(self):
-        print("in checksession", session)
-        if 'user_id' in session:
-            return {'message': 'Authenticated user'},200
-        
-        else:
-            return {'error': '401 Unauthorized'}, 401
-
+        if session.get('user_id'):
+            user = User.query.filter(User.id == session['user_id']).first()
+            return user.to_dict(), 200
+        return {'error': '401 Unauthorized'}, 401
 
 
 class Logout(Resource):
@@ -142,7 +150,7 @@ class Logout(Resource):
         
         return {'error': '401 Unauthorized'}, 401
 
-    
+api.add_resource(CurrentUser, '/current_user', endpoint='current_user')
 api.add_resource(Users, '/users', endpoint='users')
 api.add_resource(Bookshelves, '/bookshelves', endpoint='bookshelves')
 api.add_resource(Books, '/books', endpoint='books')
