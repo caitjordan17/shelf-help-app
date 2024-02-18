@@ -11,7 +11,6 @@ from config import app, db, api
 # Add your model imports
 from models import db, Book, Author, Bookshelf, User, Bookshelf_book
 
-
 app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
 
 
