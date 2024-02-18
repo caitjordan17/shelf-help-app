@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import ShelfBar from "./ShelfBar";
 import AddShelf from "./AddShelf";
+import { Link } from "react-router-dom";
 
-function MyShelves({userShelves, handleAddShelf, user}){
+function MyShelves({userShelves, user}){
     console.log("userShelves in myshelves:", userShelves)
     console.log("user in myshelves:", user)
     
@@ -12,8 +13,8 @@ function MyShelves({userShelves, handleAddShelf, user}){
         <div id="my-shelves-div">
             { userShelves ? (
                 <div>
-                    <h2 className="bk-h2"> My Shelves </h2>
-                    <AddShelf user={user.username} handleAddShelf={handleAddShelf}/>
+                    <h2 className="bk-h2" id="my-shelves-h2"> My Shelves </h2> 
+                    <Link className="link-to-btn"to={"/bookshelves/new-shelf"}>Add Shelf</Link>
                     {userShelves.map((bshelf) => (
                         <ShelfBar user={user} bshelf={bshelf} key={bshelf.id} />
                     ))}

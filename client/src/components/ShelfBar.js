@@ -6,13 +6,13 @@ import {Link} from "react-router-dom";
 function ShelfBar({bshelf}){
     const [bookIndex, setBookIndex] = useState(0)
     // console.log("bshelf",bshelf)
-    // console.log("bshelf.bookshelf_book", bshelf.bookshelf_book)
+    // console.log("SLICING THIS:", bshelf.books)
     // console.log("bshelf.name", bshelf.name)
 
     const bookList = bshelf.bookshelf_book
         .slice(bookIndex, bookIndex + 4)
         .map((book) => (
-            <Book className="bk-shelf-bar" key={book.id} book={book.book} />
+            <Book clsName="bk-shelf-bar" key={book.id} book={book.book} />
         ))
 
     function handleClickMore(){
@@ -22,6 +22,7 @@ function ShelfBar({bshelf}){
 
     return(
         <div className="bar">   
+            {bshelf && bshelf.user ? 
             <div className="background-box" >
                 <div className="belt">
                     {bookList}
@@ -29,9 +30,10 @@ function ShelfBar({bshelf}){
 
                 </div>
                 <h2 id={bshelf.id}>{bshelf.name}</h2>
-                <p>created by {bshelf.user.username}</p>
-                <Link className="link"to={`/browse-shelves/${bshelf.id}`}>See more</Link>
+                <h4>created by {bshelf.user.username}</h4>
+                <Link className="link-to-btn-small"to={`/browse-shelves/${bshelf.id}`}>See more</Link>
             </div>
+            : <div>  {null} </div>}
         </div>
     )
 }

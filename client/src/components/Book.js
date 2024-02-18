@@ -1,15 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 
-function Book({book, handleClick, clicked}){
+function Book({book, handleClick}){
+    const [clicked, setClicked] = useState(false)
+    
     return(
         <div className="book">
-            <div className={clicked ? "clicked" : "unclicked"}>
-                <img 
-                    onClick={(e) => handleClick(e.target.alt)} 
-                    src={book.book_cover} 
-                    alt={book.title} 
-                    width="90%"/>
-            </div>
+            <img 
+                onClick={(e) => {handleClick(e.target.alt); setClicked(!clicked);}} 
+                src={book.book_cover} 
+                alt={book.title} 
+                width="90%"/>
             <p>{book.title}</p>
             <p>by {book.author.name}</p> 
         </div>

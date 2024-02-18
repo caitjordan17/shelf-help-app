@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import db, Book, Author, Bookshelf, User
+from models import db, Book, Author, Bookshelf, User, Bookshelf_book
 
 
 app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
@@ -82,19 +82,22 @@ class Bookshelves(Resource):
     
     def post(self):
         data = request.get_json()
-        username = data.get('username')
-        user = User.query.filter(User.username == username).first()
-        new_bookshelf = Bookshelf(
-            name = data.get('name'),
-            user = user,
-            bookshelf_book = []
-        )
-        try:
-            db.session.add(new_bookshelf)
-            db.session.commit()
-            return make_response(new_bookshelf.to_dict(), 201)
-        except IntegrityError:
-            return {'error': 'Unprocessable Content'}, 422
+        bookshelf_book = data.get('bookshelf_book')
+        
+        # bookshelf_book = [Book.query.get(book_id) for book_id in data.get('bookshelf_book')]
+        print("bookshelf_book", bookshelf_book)
+        # new_bookshelf = Bookshelf(
+        #     name = data.get('name'),
+        #     user = User.query.filter(User.id == session['user_id']).first(),
+        #     bookshelf_book = bookshelf_book
+        # )
+        # print("new Bookshelf:", new_bookshelf)
+        # try:
+        #     db.session.add(new_bookshelf)
+        #     db.session.commit()
+        #     return make_response(new_bookshelf.to_dict(), 201)
+        # except IntegrityError:
+        #     return {'error': 'Unprocessable Content'}, 422
     
 class BookshelvesByID(Resource):
     def get(self, id):
@@ -103,7 +106,6 @@ class BookshelvesByID(Resource):
     
     def delete(self, id):
         return delete_by_id(Bookshelf, id)
-
     
 class Users(Resource):
     def get(self):
@@ -162,9 +164,3 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
-
-
-
-
-    # FIGURE OUT COOKIES!!!!!!!! 
-    # think it's impacted newshelf

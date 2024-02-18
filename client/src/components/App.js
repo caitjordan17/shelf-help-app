@@ -7,7 +7,7 @@ import MyShelves from "./MyShelves";
 import BookPage from "./BookPage";
 import ShelfPage from "./ShelfPage";
 import AddBook from "./AddBook";
-import EditShelf from "./EditShelf";
+import AddShelf from "./AddShelf";
 
 function App() {
   const [bookshelves, setBookshelves] = useState([])
@@ -53,11 +53,14 @@ function App() {
       });
     }
 
-  // console.log("bookshelves before usershelves:", bookshelves[0])
-  const userShelves = user
-    ? bookshelves.filter((bshelf) => bshelf.user.username === user.username) 
-    : null
+  console.log("BOOKSHELVES:", bookshelves)
+    // if(user != null && bookshelves != null){
+    //   userShelves = bookshelves.filter((bshelf) => bshelf.user.username === user.username) 
+    // }
 
+  const userShelves = bookshelves & user ? 
+    bookshelves.filter((bshelf) => bshelf.user.username === user.username)
+    : []
   // console.log("userShelves:", userShelves)
 
   return(
@@ -98,8 +101,8 @@ function App() {
               <BookPage user={user}/>
             </Route>
 
-            <Route path = "/bookshelves/:id/edit-shelf">
-              <EditShelf />
+            <Route path = "/bookshelves/new-shelf">
+              <AddShelf handleAddShelf={handleAddShelf}/>
             </Route>
 
           </Switch>

@@ -26,6 +26,10 @@ function ShelfPage({handleDeleteShelf, user}){
         setShelf(null)
     }
 
+    function onUpdateBookshelf(e){
+        console.log("e",e)
+    }
+
     return(
         <div id="bookshelfCard">
             <h2 className="bk-h2">{shelf ? shelf.name : 'Loading....'}</h2>
@@ -36,7 +40,7 @@ function ShelfPage({handleDeleteShelf, user}){
                 ))}
             {authorizedToEdit ? <button onClick={onDeleteShelf}>Delete Shelf</button> : null}
             <Link className="link"to={`/browse-shelves`}>See more</Link>
-            {authorizedToEdit ? <Link className="link"to={`/bookshelves/${id}/edit-shelf`}>Add more books</Link> : null}
+            {authorizedToEdit ? <Link className="link" onUpdateBookshelf={onUpdateBookshelf} to={`/bookshelves/${id}/edit-shelf`}>Add more books</Link> : null}
             </div>
         </div>
     )

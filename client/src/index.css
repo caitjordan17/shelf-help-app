@@ -51,9 +51,16 @@ p {
   color: #7B8CDE;
   font-size: 1rem;
   margin-left: 1rem;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
-
+h4 {
+  font-family: "Gill Sans", sans-serif;
+  margin-top: 1px;
+  color: #7B8CDE;
+  font-size: 1rem;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
 
 
 /* --------------------------------------------------------------- */
@@ -300,9 +307,10 @@ button:hover{
 #new-bkshelf-name{
   background-color: #ffffff;
   border: none;
-  font-size: large;
+  font-size: x-large;
   font-family: "Gill Sans", sans-serif;
   margin-left: .5rem;
+
 }
 
 #new-bkshelf-submit{
@@ -328,4 +336,52 @@ button:hover{
 
 .clicked{
   background-color: rgba(115, 115, 115, 0.5);
+}
+
+.selected-books{
+  padding-top: 2rem;
+  display: inline-grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.selected-container{
+  background-color: #b0d4c6;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  margin-top: 3rem;
+}
+
+.link-to-btn{
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  background-color: #77b59c;
+  font-family: "Gill Sans", sans-serif;
+  font-size: x-large;
+  font-weight: 600;
+  color: #d6ece7;
+}
+
+.link-to-btn:hover{
+  background-color: #746ae5;
+  color: #d6ece7;
+}
+
+#my-shelves-h2{
+  margin-bottom: 3.5rem;
+}
+
+.link-to-btn-small{
+  padding-left: .5rem;
+  padding-right: .5rem;
+  padding-top: .15rem;
+  padding-bottom: .25rem;
+  background-color: #7B8CDE;
+  font-family: "Gill Sans", sans-serif;
+  font-size: large;
+  font-weight: 600;
+  color: #d6ece7;
 }
