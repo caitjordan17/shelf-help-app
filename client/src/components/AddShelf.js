@@ -9,6 +9,7 @@ function AddShelf({handleAddShelf}){
     const [booksToAdd, setBooksToAdd] = useState([])
     const { id } = useParams()
     const [submitted, setSubmitted] = useState(false)
+    const [newBookshelfObj, setNewBookshelfObj] = useState([])
 
     useEffect(() => {
         fetch("/books")
@@ -33,27 +34,62 @@ function AddShelf({handleAddShelf}){
 
     const formik = useFormik({
         initialValues: {
-            name: "",
-            bookshelf_book: booksToAdd
+            name: ""
         },
         validationSchema: formSchema,
 
         onSubmit: (values, {resetForm}) => {
-            fetch('/bookshelves', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "Application/JSON",
-                },
-                body: JSON.stringify(values),
-            }).then((r) => r.json())
-            .then((newBookshelf) => {
-                handleAddShelf(newBookshelf)
-                console.log("newBookshelf", newBookshelf)
-                resetForm()
-                setSubmitted(true)
-            })
+            // setNewBookshelfObj(values)
+            setSubmitted(true)
+            resetForm()
+            handleAfterFormik(values)
         }
     });
+
+    function handleAfterFormik(values){
+        const bookshelfName = values.name
+        console.log("bookshelfName:", bookshelfName)
+        readyToPost({bookshelfName, booksToAdd})
+    }
+
+    function readyToPost(obj){
+        fetch('/bookshelves', {
+            method: "POST",
+            headers: {
+              "Content-Type": "Application/JSON",
+            },
+            body: JSON.stringify(obj),
+        })
+        .then((r) => r.json())
+        .then((bkshelf) => console.log("obj", obj))
+    }
+    
+    console.log("newBookshelfObj", newBookshelfObj)
+
+
+    // const formik = useFormik({
+    //     initialValues: {
+    //         name: "",
+    //         bookshelf_book: booksToAdd
+    //     },
+    //     validationSchema: formSchema,
+
+    //     onSubmit: (values, {resetForm}) => {
+    //         fetch('/bookshelves', {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "Application/JSON",
+    //             },
+    //             body: JSON.stringify(values),
+    //         }).then((r) => r.json())
+    //         .then((newBookshelf) => {
+    //             handleAddShelf(newBookshelf)
+    //             console.log("newBookshelf", newBookshelf)
+    //             resetForm()
+    //             setSubmitted(true)
+    //         })
+    //     }
+    // });
 
 
 
@@ -62,7 +98,7 @@ function AddShelf({handleAddShelf}){
         <div>
             { submitted ?
             <div>
-                <h3>Submitted!</h3>
+                <h2>Submitted!</h2>
                 <Link className="link"to={`/browse-shelves/${id}`}>Back to shelf</Link>
             </div>
             : 
@@ -86,6 +122,7 @@ function AddShelf({handleAddShelf}){
                             onChange={formik.handleChange}
                             value={formik.values.name}
                         />
+                        
                         <button type="submit">Add New Bookshelf</button>
                     </form>
                     <p className="errors">{formik.errors.name}</p>

@@ -82,10 +82,52 @@ class Bookshelves(Resource):
     
     def post(self):
         data = request.get_json()
-        bookshelf_book = data.get('bookshelf_book')
+        books_to_add = data.get('booksToAdd')
+        print("booksToAdd:", books_to_add)
+        b_name = data.get('bookshelfName')
+        print('name:', b_name)
+        id_of_user = session['user_id']
+        b_user = User.query.filter(User.id == id_of_user).first()
+        print("user:", b_user)
+        new_bookshelf = Bookshelf(
+            name=b_name, user=b_user)
+        db.session.add(new_bookshelf)
+        db.session.commit()
+        added_bookshelf = Bookshelf.query.filter(Bookshelf.name==b_name).first()
+        print("added_bookshelf",added_bookshelf)
+        for item in books_to_add:
+            print("item", item)
+            print("added_bookshelf", added_bookshelf)
+            print("item.title", item.get('title'))
+            i_book = Book.query.filter(Book.title == item.get('title')).first()
+            print("i_book",i_book)
+            db.session.add(Bookshelf_book(book=i_book, bookshelf=added_bookshelf))
+            db.session.commit()
         
+        response_data = {
+            "message": "Bookshelf created successfully",
+            "bookshelf": {
+                "id": added_bookshelf.id,
+                "name": added_bookshelf.name,
+                "user_id": added_bookshelf.user_id,
+            },
+            "books_added": books_to_add, 
+        }
+
+        return make_response(response_data, 201)
+       
+
+       
+       
+       
+        # except IntegrityError:
+        #     return {'error': 'Unprocessable Content'}, 422
+
+
+        # filled_bookshelf = Bookshelf_book()
+        # print("new Bookshelf:", new_bookshelf)
         # bookshelf_book = [Book.query.get(book_id) for book_id in data.get('bookshelf_book')]
-        print("bookshelf_book", bookshelf_book)
+        # print("bookshelf_book", bookshelf_book)
         # new_bookshelf = Bookshelf(
         #     name = data.get('name'),
         #     user = User.query.filter(User.id == session['user_id']).first(),
