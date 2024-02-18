@@ -191,6 +191,14 @@ button {
   color: #b0d4c6;
 }
 
+#signup-header{
+  margin: 1rem;
+  font-family: "Gill Sans", sans-serif;
+  color: #d6ece7;
+  font-size: x-large;
+  padding-bottom: 1rem;
+}
+
 #login-header{
   margin: 1rem;
   font-family: "Gill Sans", sans-serif;
@@ -199,8 +207,23 @@ button {
   padding-bottom: 1rem;
 }
 
+#new-password{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
 
 #password{
+  background-color: #ffffff;
+  border: none;
+  font-size: large;
+  font-family: "Gill Sans", sans-serif;
+  margin-left: .5rem;
+}
+
+#new-username{
   background-color: #ffffff;
   border: none;
   font-size: large;
@@ -225,7 +248,7 @@ button{
 }
 
 #login-div{
-  width: 20rem;
+  width: 30rem;
   background-color: #746ae5;
   text-align: center;
   margin: 1rem;

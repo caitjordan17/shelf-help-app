@@ -52,13 +52,13 @@ function SignUp({setAppUser, setLoggedIn, loggedIn}){
                 <h2>Submitted!</h2>
             </div>
             : <div>
-                 <h2>Sign Up!</h2>
+                 <h2 id="signup-header">Sign Up!</h2>
                 <form onSubmit={formik.handleSubmit}>
                     <input
                         type="text"
                         name="username"
                         id="new-username"
-                        placeholder="Userame"
+                        placeholder="Username"
                         autoComplete="off"
                         onChange={formik.handleChange}
                         value={formik.values.username}

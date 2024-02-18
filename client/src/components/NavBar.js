@@ -11,7 +11,7 @@ function NavBar({user, handleLogout}){
                 <NavLink className="navButton" exact to="/browse-shelves">Browse Shelves</NavLink>
                 <NavLink className="navButton" exact to="/my-shelves">My Shelves</NavLink>
                 <NavLink className="navButton" exact to="/browse-books">Browse Books</NavLink>
-                {user ? <button className="navButton" id="logout-btn" onClick={handleLogout} >Logout</button> : 
+                {user && user.username ? <button className="navButton" id="logout-btn" onClick={handleLogout} >Logout</button> : 
                 <NavLink className="navButton" exact to="/login">Login</NavLink>}
             </nav>
         </header>
