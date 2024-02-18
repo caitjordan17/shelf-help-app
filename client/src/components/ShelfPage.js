@@ -46,9 +46,9 @@ function ShelfPage({handleDeleteShelf, user}){
     });
 
     function handleAfterFormik(values){
-        const bookshelfName = values.name
-        console.log("bookshelfName:", bookshelfName)
-        readyToPost({bookshelfName})
+        const name = values.name
+        console.log("bookshelfName:", name)
+        readyToPost({name})
     }
 
     function readyToPost(updatedName){

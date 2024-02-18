@@ -117,17 +117,13 @@ class BookshelvesByID(Resource):
         return delete_by_id(Bookshelf, id)
     
     def patch(self, id):
-        print("id:", id)
         data = request.get_json()
         bookshelf = Bookshelf.query.filter_by(id=id).first()
-        print("bkshelf id:", bookshelf)
         for attr in data:
             setattr(bookshelf, attr, data[attr])
-        print("udpatedBookshelf1:", bookshelf)
         db.session.add(bookshelf)
         db.session.commit()
-        print("udpatedBookshelf2:", bookshelf)
-        # return make_response(bookshelf.to_dict, 200)
+        return make_response(bookshelf.to_dict(), 200)
     
 class Users(Resource):
     def get(self):
