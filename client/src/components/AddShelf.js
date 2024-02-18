@@ -9,7 +9,6 @@ function AddShelf({handleAddShelf}){
     const [booksToAdd, setBooksToAdd] = useState([])
     const { id } = useParams()
     const [submitted, setSubmitted] = useState(false)
-    const [newBookshelfObj, setNewBookshelfObj] = useState([])
 
     useEffect(() => {
         fetch("/books")
@@ -39,7 +38,6 @@ function AddShelf({handleAddShelf}){
         validationSchema: formSchema,
 
         onSubmit: (values, {resetForm}) => {
-            // setNewBookshelfObj(values)
             setSubmitted(true)
             resetForm()
             handleAfterFormik(values)
@@ -63,35 +61,6 @@ function AddShelf({handleAddShelf}){
         .then((r) => r.json())
         .then((bkshelf) => console.log("obj", obj))
     }
-    
-    console.log("newBookshelfObj", newBookshelfObj)
-
-
-    // const formik = useFormik({
-    //     initialValues: {
-    //         name: "",
-    //         bookshelf_book: booksToAdd
-    //     },
-    //     validationSchema: formSchema,
-
-    //     onSubmit: (values, {resetForm}) => {
-    //         fetch('/bookshelves', {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "Application/JSON",
-    //             },
-    //             body: JSON.stringify(values),
-    //         }).then((r) => r.json())
-    //         .then((newBookshelf) => {
-    //             handleAddShelf(newBookshelf)
-    //             console.log("newBookshelf", newBookshelf)
-    //             resetForm()
-    //             setSubmitted(true)
-    //         })
-    //     }
-    // });
-
-
 
     
     return(

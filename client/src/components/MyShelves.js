@@ -1,14 +1,11 @@
 import React, {useState} from "react";
 import ShelfBar from "./ShelfBar";
-import AddShelf from "./AddShelf";
 import { Link } from "react-router-dom";
 
 function MyShelves({userShelves, user}){
     console.log("userShelves in myshelves:", userShelves)
     console.log("user in myshelves:", user)
-    
 
-    
     return(
         <div id="my-shelves-div">
             { userShelves ? (

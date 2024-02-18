@@ -83,24 +83,16 @@ class Bookshelves(Resource):
     def post(self):
         data = request.get_json()
         books_to_add = data.get('booksToAdd')
-        print("booksToAdd:", books_to_add)
         b_name = data.get('bookshelfName')
-        print('name:', b_name)
         id_of_user = session['user_id']
         b_user = User.query.filter(User.id == id_of_user).first()
-        print("user:", b_user)
         new_bookshelf = Bookshelf(
             name=b_name, user=b_user)
         db.session.add(new_bookshelf)
         db.session.commit()
         added_bookshelf = Bookshelf.query.filter(Bookshelf.name==b_name).first()
-        print("added_bookshelf",added_bookshelf)
         for item in books_to_add:
-            print("item", item)
-            print("added_bookshelf", added_bookshelf)
-            print("item.title", item.get('title'))
             i_book = Book.query.filter(Book.title == item.get('title')).first()
-            print("i_book",i_book)
             db.session.add(Bookshelf_book(book=i_book, bookshelf=added_bookshelf))
             db.session.commit()
         
@@ -115,31 +107,6 @@ class Bookshelves(Resource):
         }
 
         return make_response(response_data, 201)
-       
-
-       
-       
-       
-        # except IntegrityError:
-        #     return {'error': 'Unprocessable Content'}, 422
-
-
-        # filled_bookshelf = Bookshelf_book()
-        # print("new Bookshelf:", new_bookshelf)
-        # bookshelf_book = [Book.query.get(book_id) for book_id in data.get('bookshelf_book')]
-        # print("bookshelf_book", bookshelf_book)
-        # new_bookshelf = Bookshelf(
-        #     name = data.get('name'),
-        #     user = User.query.filter(User.id == session['user_id']).first(),
-        #     bookshelf_book = bookshelf_book
-        # )
-        # print("new Bookshelf:", new_bookshelf)
-        # try:
-        #     db.session.add(new_bookshelf)
-        #     db.session.commit()
-        #     return make_response(new_bookshelf.to_dict(), 201)
-        # except IntegrityError:
-        #     return {'error': 'Unprocessable Content'}, 422
     
 class BookshelvesByID(Resource):
     def get(self, id):
@@ -149,10 +116,23 @@ class BookshelvesByID(Resource):
     def delete(self, id):
         return delete_by_id(Bookshelf, id)
     
+    def patch(self, id):
+        print("id:", id)
+        data = request.get_json()
+        bookshelf = Bookshelf.query.filter_by(id=id).first()
+        print("bkshelf id:", bookshelf)
+        for attr in data:
+            setattr(bookshelf, attr, data[attr])
+        print("udpatedBookshelf1:", bookshelf)
+        db.session.add(bookshelf)
+        db.session.commit()
+        print("udpatedBookshelf2:", bookshelf)
+        # return make_response(bookshelf.to_dict, 200)
+    
 class Users(Resource):
     def get(self):
         return make_response(get_all(User), 200)
-    
+     
 class CurrentUser(Resource):
     def get(self):
         current_session = [session]
