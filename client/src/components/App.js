@@ -55,6 +55,18 @@ function App() {
 
   console.log("BOOKSHELVES:", bookshelves)
 
+  function handleNameUpdate(updatedName, id){
+    console.log("updatedName", updatedName.name)
+    let updatedBookshelf = bookshelves.filter((bookshelf) => bookshelf.id == id)
+    updatedBookshelf[0].name = updatedName.name
+    console.log("updatedBookshelf", updatedBookshelf)
+    const updatedBookshelvesArray = bookshelves.map((bookshelf) => {
+      if(bookshelf.id == id) return updatedBookshelf[0];
+      return bookshelf;
+    })
+    setBookshelves(updatedBookshelvesArray)
+  }
+
 
   const userShelves = user && bookshelves ? 
     bookshelves.filter((bshelf) => bshelf.user.username === user.username)
@@ -71,9 +83,7 @@ function App() {
             <Route path="/my-shelves">
               <MyShelves 
                 userShelves={userShelves} 
-                user={user} 
-                handleAddShelf={handleAddShelf} 
-                handleDeleteShelf={handleDeleteShelf}/>
+                user={user} />
             </Route>
 
             <Route exact path="/browse-shelves">
@@ -83,11 +93,12 @@ function App() {
             <Route exact path="/browse-shelves/:id">
               <ShelfPage 
                 user={user} 
-                handleDeleteShelf={handleDeleteShelf}/>
+                handleDeleteShelf={handleDeleteShelf}
+                handleNameUpdate={handleNameUpdate}/>
             </Route>
 
             <Route path="/login">
-              <Login setAppUser={setUser} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+              <Login user={user} setAppUser={setUser} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
             </Route>
 
             <Route path="/browse-books/add">

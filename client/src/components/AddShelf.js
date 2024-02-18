@@ -22,14 +22,14 @@ function AddShelf({handleAddShelf}){
 
     function handleClick(bookInEvent){
         const bookObj = books.filter((book) => book.title == bookInEvent)
-        console.log("checking...",(booksToAdd.find((book) => book.title == bookInEvent)))
+        // console.log("checking...",(booksToAdd.find((book) => book.title == bookInEvent)))
         if (booksToAdd.find((book) => book.title == bookInEvent)){
         } else {
             setBooksToAdd([...booksToAdd, bookObj[0]])
         }
     }
 
-    console.log("booksToAdd:",booksToAdd)
+    // console.log("booksToAdd:",booksToAdd)
 
     const formik = useFormik({
         initialValues: {
@@ -46,7 +46,7 @@ function AddShelf({handleAddShelf}){
 
     function handleAfterFormik(values){
         const bookshelfName = values.name
-        console.log("bookshelfName:", bookshelfName)
+        // console.log("bookshelfName:", bookshelfName)
         readyToPost({bookshelfName, booksToAdd})
     }
 
@@ -59,7 +59,10 @@ function AddShelf({handleAddShelf}){
             body: JSON.stringify(obj),
         })
         .then((r) => r.json())
-        .then((bkshelf) => console.log("obj", obj))
+        .then((bkshelf) => {
+            console.log("obj", obj)
+            handleAddShelf(bkshelf)
+        })
     }
 
     
@@ -68,7 +71,7 @@ function AddShelf({handleAddShelf}){
             { submitted ?
             <div>
                 <h2>Submitted!</h2>
-                <Link className="link"to={`/browse-shelves/${id}`}>Back to shelf</Link>
+                <Link className="link-to-btn"to={`/my-shelves`}>Back to my shelves</Link>
             </div>
             : 
             <div>

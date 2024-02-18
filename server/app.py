@@ -82,7 +82,7 @@ class Bookshelves(Resource):
     
     def post(self):
         data = request.get_json()
-        books_to_add = data.get('booksToAdd')
+        bookshelf_book = data.get('booksToAdd')
         b_name = data.get('bookshelfName')
         id_of_user = session['user_id']
         b_user = User.query.filter(User.id == id_of_user).first()
@@ -91,22 +91,15 @@ class Bookshelves(Resource):
         db.session.add(new_bookshelf)
         db.session.commit()
         added_bookshelf = Bookshelf.query.filter(Bookshelf.name==b_name).first()
-        for item in books_to_add:
+        print("added_bookshelf", added_bookshelf)
+        for item in bookshelf_book:
             i_book = Book.query.filter(Book.title == item.get('title')).first()
             db.session.add(Bookshelf_book(book=i_book, bookshelf=added_bookshelf))
             db.session.commit()
-        
-        response_data = {
-            "message": "Bookshelf created successfully",
-            "bookshelf": {
-                "id": added_bookshelf.id,
-                "name": added_bookshelf.name,
-                "user_id": added_bookshelf.user_id,
-            },
-            "books_added": books_to_add, 
-        }
+        filled_bookshelf= Bookshelf.query.filter(Bookshelf.name==b_name).first()
+        print("filled_bookshelf after commit:", filled_bookshelf)
 
-        return make_response(response_data, 201)
+        return make_response(filled_bookshelf.to_dict(), 201)
     
 class BookshelvesByID(Resource):
     def get(self, id):
@@ -151,6 +144,31 @@ class Login(Resource):
             return response
         return {'message': 'Invalid username or password'}, 401
     
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        user = User.query.filter(User.username == username).first()
+        print("data:",data)
+        print("username",username)
+        print("user?", user)
+        if not user:
+            print("passed user")
+            new_user=User(username=username,)
+            print("passed User(username,)")
+            new_user.password_hash = password
+            print("passed password hash")
+            print("new_user:", new_user)
+            db.session.add(new_user)
+            db.session.commit()
+            posted_user = User.query.filter(username==User.username).first()
+            print("posted_user", posted_user)
+            session['user_id'] = posted_user.id
+            return make_response(posted_user.to_dict(), 201)
+        return {'message': 'Username already taken'}, 401
+
+    
 class CheckSession(Resource):
     def get(self):
         if session.get('user_id'):
@@ -178,6 +196,7 @@ api.add_resource(BookshelvesByID, '/bookshelves/<int:id>', endpoint='bookshelves
 api.add_resource(Authors, '/authors', endpoint='authors')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 if __name__ == '__main__':

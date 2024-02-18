@@ -3,8 +3,8 @@ import ShelfBar from "./ShelfBar";
 import { Link } from "react-router-dom";
 
 function MyShelves({userShelves, user}){
-    console.log("userShelves in myshelves:", userShelves)
-    console.log("user in myshelves:", user)
+    // console.log("userShelves in myshelves:", userShelves)
+    // console.log("user in myshelves:", user)
 
     return(
         <div id="my-shelves-div">

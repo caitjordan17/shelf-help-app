@@ -356,12 +356,12 @@ button:hover{
 .link-to-btn{
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  padding-top: .15rem;
+  padding-bottom: .15rem;
   background-color: #77b59c;
   font-family: "Gill Sans", sans-serif;
   font-size: x-large;
-  font-weight: 600;
+  font-weight: 500;
   color: #d6ece7;
 }
 
@@ -384,4 +384,12 @@ button:hover{
   font-size: large;
   font-weight: 600;
   color: #d6ece7;
+}
+
+#signin-question{
+  color: #d6ece7;
+}
+
+#delete-btn{
+  background-color: #e56a6a;
 }

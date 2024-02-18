@@ -5,7 +5,7 @@ function NavBar({user, handleLogout}){
 
     return(
         <header className="header">
-            {user ? <h3 id="welcome-user"> Welcome, {user.username}! </h3> : null }
+            {user ? <h3 id="welcome-user"> Welcome {user.username}! </h3>: null}
             <h1>ShelfHelp</h1>
             <nav className="navigation">
                 <NavLink className="navButton" exact to="/browse-shelves">Browse Shelves</NavLink>

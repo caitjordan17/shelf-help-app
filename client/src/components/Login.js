@@ -1,16 +1,17 @@
 
 import React, {useState} from "react";
+import SignUp from "./SignUp";
 
-function Login({setAppUser, loggedIn, setLoggedIn}){
+function Login({setAppUser, loggedIn, setLoggedIn, user}){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [clicked, setClicked] = useState(false);
 
     
     function handleSubmit(e){
         e.preventDefault();
-        console.log(username, password)
         setIsLoading(true);
         fetch("/login", {
             method: "POST",
@@ -23,7 +24,7 @@ function Login({setAppUser, loggedIn, setLoggedIn}){
             setIsLoading(false);
             if (r.ok) {
                 r.json().then((user) => {
-                    // setAppUser(user);
+                    setAppUser(user);
                     setLoggedIn(true);
                     setUsername("");
                     setPassword("");
@@ -33,6 +34,10 @@ function Login({setAppUser, loggedIn, setLoggedIn}){
                 r.json().then((err) => setErrors(true));
             }
         });
+    }
+
+    function handleClick(){
+        setClicked(!clicked)
     }
 
     return(
@@ -72,8 +77,19 @@ function Login({setAppUser, loggedIn, setLoggedIn}){
                         {errors ? <h3>Username & Password do not match.</h3> : null}
                     </div>
                 </form> 
+                <div>
+                    {clicked ?
+                        <SignUp 
+                            setAppUser={setAppUser} user={user} 
+                            loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+                        : <div>
+                            <h4 id="signin-question">Not already a user?</h4>
+                            <button id="expand-signup" onClick={handleClick}>Sign Up Here!</button>
+                        </div>}
+                </div>
             </div>
             )}
+
         </div>
     );
 }

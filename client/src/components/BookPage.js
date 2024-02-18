@@ -14,6 +14,9 @@ function BookPage({}){
     function onAddBook(bookObj){
         setBooks([...books, bookObj]);
     }
+    function handleImgClick(){
+        console.log("clicked")
+    }
 
     return(
         <div id="bookshelfCard">
@@ -21,7 +24,7 @@ function BookPage({}){
             <AddBook onAddBook={onAddBook}/>
             <div id="book-list">
                 {books ? books.map((book) => (
-                    <Book book={book} key={book.id} />
+                    <Book book={book} key={book.id} handleClick={handleImgClick}/>
                 )) : <p>Loading...</p>}
             </div>
         </div>
