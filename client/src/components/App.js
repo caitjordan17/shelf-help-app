@@ -54,14 +54,11 @@ function App() {
     }
 
   console.log("BOOKSHELVES:", bookshelves)
-    // if(user != null && bookshelves != null){
-    //   userShelves = bookshelves.filter((bshelf) => bshelf.user.username === user.username) 
-    // }
 
-  const userShelves = bookshelves & user ? 
+
+  const userShelves = user && bookshelves ? 
     bookshelves.filter((bshelf) => bshelf.user.username === user.username)
     : []
-  // console.log("userShelves:", userShelves)
 
   return(
      <Router>

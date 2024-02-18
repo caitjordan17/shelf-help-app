@@ -4,7 +4,8 @@ import { useParams, Link } from "react-router-dom";
 
 function ShelfPage({handleDeleteShelf, user}){
     const [shelf, setShelf] = useState(null);
-    const { id } = useParams()
+    const [clicked, setClicked] = useState(false);
+    const { id } = useParams();
 
 
     useEffect(() => {
@@ -30,10 +31,15 @@ function ShelfPage({handleDeleteShelf, user}){
         console.log("e",e)
     }
 
+    function handleEdit(){
+        setClicked(true)
+    }
+
     return(
         <div id="bookshelfCard">
             <h2 className="bk-h2">{shelf ? shelf.name : 'Loading....'}</h2>
             <p>{shelf ? `created by ${shelf.user.username}` : 'Loading....'}</p>
+            <button onClick={handleEdit}>Edit name</button>
             <div id="book-list">
                 {shelf && shelf.bookshelf_book.map((book) => (
                     <Book book={book.book} key={book.id} />
