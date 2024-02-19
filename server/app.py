@@ -13,7 +13,7 @@ from models import db, Book, Author, Bookshelf, User, Bookshelf_book
 
 app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
 
-
+ 
 def get_all(cls):
     items = [item.to_dict() for item in cls.query.all()]
     return items
