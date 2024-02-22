@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: e7ceb3dc9085
+Revision ID: 893f24b5698c
 Revises: 
-Create Date: 2024-02-06 18:47:15.813323
+Create Date: 2024-02-22 10:52:53.892760
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e7ceb3dc9085'
+revision = '893f24b5698c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,7 +34,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('book_cover', sa.String(), nullable=False),
-    sa.Column('author_id', sa.String(), nullable=True),
+    sa.Column('page_count', sa.Integer(), nullable=True),
+    sa.Column('author_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['authors.id'], name=op.f('fk_books_author_id_authors')),
     sa.PrimaryKeyConstraint('id')
     )
@@ -46,11 +47,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('bookshelf_books',
-    sa.Column('book_id', sa.Integer(), nullable=False),
-    sa.Column('bookshelf_id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('read_status', sa.Boolean(), nullable=True),
+    sa.Column('book_id', sa.Integer(), nullable=True),
+    sa.Column('bookshelf_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['book_id'], ['books.id'], name=op.f('fk_bookshelf_books_book_id_books')),
     sa.ForeignKeyConstraint(['bookshelf_id'], ['bookshelves.id'], name=op.f('fk_bookshelf_books_bookshelf_id_bookshelves')),
-    sa.PrimaryKeyConstraint('book_id', 'bookshelf_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

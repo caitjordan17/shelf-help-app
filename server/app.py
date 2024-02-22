@@ -10,6 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 # Add your model imports
 from models import db, Book, Author, Bookshelf, User, Bookshelf_book
+import os
 
 app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
 
@@ -37,6 +38,29 @@ def get_by_user(cls, uid):
 @app.route('/')
 def index():
     return '<h1>BookShelf BackEnd</h1>'
+
+# 24 pages or more
+
+
+class BigBook (Resource):
+    def get(self, page_number):
+        books = [book.to_dict() for book in Book.query.filter(Book.page_count >= page_number).all()]
+        return books
+
+class CheckReadStatus (Resource):
+    def patch(self, bk_id, bkslf_id):
+        line = Bookshelf_book.query.filter_by(book_id=bk_id, bookshelf_id=bkslf_id).first()
+        if line:
+            line.read_status = not line.read_status
+            db.session.commit()
+            print(line.read_status)
+        return (line.read_status, 200)
+
+    
+    # query bookshelf_book for match to both ids
+    # check user = matching session to bookshelf.user
+    # if both correct, accept post to update read status
+    # in front end add button or emoji that user can click & it changes to !=
 
 class Books(Resource):
     def get(self):
@@ -187,6 +211,8 @@ class Logout(Resource):
         
         return {'error': '401 Unauthorized'}, 401
 
+api.add_resource(CheckReadStatus, '/check_read_status/<int:bk_id>/<int:bkslf_id>', endpoint='check_read_status')
+api.add_resource(BigBook, '/big_book/<int:page_number>')
 api.add_resource(CurrentUser, '/current_user', endpoint='current_user')
 api.add_resource(Users, '/users', endpoint='users')
 api.add_resource(Bookshelves, '/bookshelves', endpoint='bookshelves')

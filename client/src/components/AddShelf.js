@@ -64,8 +64,10 @@ function AddShelf({handleAddShelf}){
             handleAddShelf(bkshelf)
         })
     }
+    let shelfID=null
 
-    
+    let authorizedToEdit = false
+
     return(
         <div>
             { submitted ?
@@ -80,7 +82,7 @@ function AddShelf({handleAddShelf}){
                     <p>Select a few books by clicking on their covers & click "Add New Bookshelf" when you're done!</p>
                     <div className="selected-books">
                         {booksToAdd ? booksToAdd.map((book) =>(
-                            <Book handleClick={handleClick} book={book} key={book.id}/>
+                            <Book authorizedToEdit={authorizedToEdit} handleClick={handleClick} book={book} key={book.id}/>
                         )): <p>Nothing added yet</p>}
                     </div>
                     <div id="new-bookshelf">
@@ -102,7 +104,7 @@ function AddShelf({handleAddShelf}){
                 </div>
                 <div id="book-list">
                     {books ? books.map((book) => (
-                        <Book handleClick={handleClick} book={book} key={book.id} />
+                        <Book bkshelfbk={shelfID} shelfID={shelfID} authorizedToEdit={authorizedToEdit} handleClick={handleClick} book={book} key={book.id} />
                     )) : <p>Loading...</p>}
                 </div>
             </div>}

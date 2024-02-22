@@ -9,6 +9,8 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
     const [clicked, setClicked] = useState(false);
     const { id } = useParams();
 
+    // console.log(shelf.bookshelf_book)
+
     useEffect(() => {
         fetch(`/bookshelves/${id}`) 
             .then(r => r.json())
@@ -19,6 +21,11 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
 
     if (user != null && shelf && shelf.user != null){
         authorizedToEdit = shelf.user.username == user.username
+    }
+
+    let shelfID=null
+    if (shelf != null){
+        shelfID=shelf.id
     }
         
     function handleEdit(){
@@ -73,6 +80,8 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
     function shelfPageNameUpdate(updatedName){
         shelf.name = updatedName.name
       }
+
+    
     
 
     return(
@@ -105,7 +114,7 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
             }
             <div id="book-list">
                 {shelf && shelf.bookshelf_book.map((book) => (
-                    <Book book={book.book} key={book.id} />
+                    <Book shelfID={shelfID} authorizedToEdit={authorizedToEdit} bkshelfbk={book.read_status} book={book.book} key={book.id} />
                 ))}
             </div>
             {authorizedToEdit ? 

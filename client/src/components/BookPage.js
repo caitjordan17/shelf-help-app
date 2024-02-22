@@ -17,6 +17,8 @@ function BookPage({}){
     function handleImgClick(){
         console.log("clicked")
     }
+    let shelfID=null
+    let authorizedToEdit = false
 
     return(
         <div id="bookshelfCard">
@@ -24,7 +26,7 @@ function BookPage({}){
             <AddBook onAddBook={onAddBook}/>
             <div id="book-list">
                 {books ? books.map((book) => (
-                    <Book book={book} key={book.id} handleClick={handleImgClick}/>
+                    <Book bkshelfbk={shelfID} shelfID={shelfID} authorizedToEdit={authorizedToEdit} book={book} key={book.id} handleClick={handleImgClick}/>
                 )) : <p>Loading...</p>}
             </div>
         </div>

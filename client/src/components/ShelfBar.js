@@ -3,21 +3,21 @@ import MoreButton from "./MoreButton";
 import Book from "./Book";
 import {Link} from "react-router-dom";
 
-function ShelfBar({bshelf}){
+function ShelfBar({bshelf, user}){
     const [bookIndex, setBookIndex] = useState(0)
-    // console.log("bshelf",bshelf)
-    // console.log("SLICING THIS:", bshelf.books)
-    // console.log("bshelf.name", bshelf.name)
-
-    const bookList = bshelf.bookshelf_book
-        .slice(bookIndex, bookIndex + 4)
-        .map((book) => (
-            <Book clsName="bk-shelf-bar" key={book.id} book={book.book} handleClick={handleImgClick}/>
-        ))
-
+   
     function handleClickMore(){
         setBookIndex((bookIndex) => (bookIndex + 4) % bshelf.bookshelf_book.length);
     }
+
+    let authorizedToEdit = false
+    let shelfID=null
+  
+    const bookList = bshelf.bookshelf_book
+        .slice(bookIndex, bookIndex + 4)
+        .map((book) => (
+            <Book clsName="bk-shelf-bar" bkshelfbk={shelfID} shelfID={shelfID} authorizedToEdit={authorizedToEdit} key={book.id} book={book.book} handleClick={handleImgClick}/>
+        ))
 
     function handleImgClick(){
         console.log("clicked")

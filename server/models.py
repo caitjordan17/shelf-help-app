@@ -14,6 +14,7 @@ class Book(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     book_cover = db.Column(db.String, nullable=False)
+    page_count= db.Column(db.Integer)
    
 #   relationships
     author = db.relationship('Author', back_populates='books')
@@ -24,12 +25,14 @@ class Book(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<ID: {self.id}, Title: {self.title}>'
 
+    # create pagecount 
+    # custom endpoint that returns books with x page count or more
 
 class Author(db.Model, SerializerMixin):
     __tablename__ = "authors"
 
     serialize_rules = ('-books.bookshelf_book','-books.author',
-                       '-books.author_id','-books.book_cover',) #done
+                       '-books.author_id','-books.book_cover','-books.page_count') #done
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +44,7 @@ class Author(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<ID: {self.id}, Name: {self.name}>'
     
+    
 
 class Bookshelf(db.Model, SerializerMixin):
     __tablename__ = "bookshelves"
@@ -48,7 +52,7 @@ class Bookshelf(db.Model, SerializerMixin):
     serialize_rules = ('-user_id', '-user._password_hash', '-user.bookshelves', '-bookshelf_book.bookshelf', '-bookshelf_book.id', 
                        '-bookshelf_book.bookshelf_id', '-bookshelf_book.book.author.books',
                        '-bookshelf_book.book.author_id','-bookshelf_book.book.bookshelf_book', 
-                       '-bookshelf_book.book_id',) #done
+                       '-bookshelf_book.book_id','-bookshelf_book.books.page_count') #done
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -67,6 +71,7 @@ class Bookshelf(db.Model, SerializerMixin):
 class Bookshelf_book(db.Model, SerializerMixin):
     __tablename__ = "bookshelf_books"
     id = db.Column(db.Integer, primary_key=True)
+    read_status = db.Column(db.Boolean, default=False)
 
 #   relationships
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))

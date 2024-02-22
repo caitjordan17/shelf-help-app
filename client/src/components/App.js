@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import BrowseShelves from "./BrowseShelves";
@@ -111,6 +111,10 @@ function App() {
 
             <Route path = "/bookshelves/new-shelf">
               <AddShelf handleAddShelf={handleAddShelf}/>
+            </Route>
+
+            <Route exact path="/">
+              <Redirect to="/browse-shelves"/>
             </Route>
 
           </Switch>
