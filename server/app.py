@@ -12,7 +12,7 @@ from config import app, db, api
 from models import db, Book, Author, Bookshelf, User, Bookshelf_book
 import os
 
-app.config['SECRET_KEY'] = b'YgffzgsFFXz*x00#xad|FDSS234kkl((jG8**^x1DDDSFAbd5x10K'
+app.config['SECRET_KEY'] = os.environ.get('MY_SECRET_KEY')
 
  
 def get_all(cls):
