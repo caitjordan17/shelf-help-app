@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: 893f24b5698c
+Revision ID: c2284c82d7fc
 Revises: 
-Create Date: 2024-02-22 10:52:53.892760
+Create Date: 2024-02-24 16:36:15.235271
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '893f24b5698c'
+revision = 'c2284c82d7fc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,7 +34,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('book_cover', sa.String(), nullable=False),
-    sa.Column('page_count', sa.Integer(), nullable=True),
     sa.Column('author_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['authors.id'], name=op.f('fk_books_author_id_authors')),
     sa.PrimaryKeyConstraint('id')

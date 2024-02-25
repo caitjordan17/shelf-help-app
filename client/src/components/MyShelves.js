@@ -1,10 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 import ShelfBar from "./ShelfBar";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-function MyShelves({userShelves, user}){
-    // console.log("userShelves in myshelves:", userShelves)
-    // console.log("user in myshelves:", user)
+function MyShelves(){
+    const user = useSelector(state => state.user)
+    const reduxBookshelves = useSelector(state => state.bookshelves)
+
+    const userShelves = user && reduxBookshelves ? 
+    reduxBookshelves.filter((bshelf) => bshelf.user.username === user.username)
+    : []
 
     return(
         <div id="my-shelves-div">
@@ -13,7 +18,7 @@ function MyShelves({userShelves, user}){
                     <h2 className="bk-h2" id="my-shelves-h2"> My Shelves </h2> 
                     <Link className="link-to-btn"to={"/bookshelves/new-shelf"}>Add Shelf</Link>
                     {userShelves.map((bshelf) => (
-                        <ShelfBar user={user} bshelf={bshelf} key={bshelf.id} />
+                        <ShelfBar bshelf={bshelf} key={bshelf.id} />
                     ))}
                 </div>
                 ) : (

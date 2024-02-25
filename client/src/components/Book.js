@@ -1,13 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-function Book({book, handleClick, authorizedToEdit, shelfID, bkshelfbk}){
+function Book({ book, handleClick, authorizedToEdit, shelfID, bkshelfbk }){
     const [readStatus, setReadStatus] = useState(bkshelfbk)
-
-    console.log(book)
-    console.log("here:",bkshelfbk)
-
-    // if(bkshelfbk ==true){
-    //     setReadStatus(true)}
 
     function handleReadUpdate(){
         console.log(`${readStatus} updated on backend`)
@@ -29,8 +23,7 @@ function Book({book, handleClick, authorizedToEdit, shelfID, bkshelfbk}){
         .then((r) => r.json())
         .then(handleReadUpdate)
     }
-    
-    // how to pass bookshelf id -- on back end? pass user
+
     return(
         <div className="book">
             <img 

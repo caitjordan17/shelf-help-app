@@ -14,7 +14,6 @@ class Book(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     book_cover = db.Column(db.String, nullable=False)
-    page_count= db.Column(db.Integer)
    
 #   relationships
     author = db.relationship('Author', back_populates='books')
@@ -25,8 +24,6 @@ class Book(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<ID: {self.id}, Title: {self.title}>'
 
-    # create pagecount 
-    # custom endpoint that returns books with x page count or more
 
 class Author(db.Model, SerializerMixin):
     __tablename__ = "authors"
@@ -66,7 +63,6 @@ class Bookshelf(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<ID: {self.id}, Name: {self.name}> '
 
-# make name editable
 
 class Bookshelf_book(db.Model, SerializerMixin):
     __tablename__ = "bookshelf_books"
@@ -86,8 +82,7 @@ class User(db.Model, SerializerMixin):
     __tablename__= "users"
 
     serialize_rules = ('-bookshelves.user', '-bookshelves.bookshelf_book', 
-                       '-bookshelves.user_id', '-_password_hash',) #done #remove '-_password_hash', if need to see them
-    # serialize_rules = ('-bookshelves',)
+                       '-bookshelves.user_id', '-_password_hash',) #done 
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -111,12 +106,6 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8')
         )
-    
-    # @validates('username')
-    # def validate_username(self, key, entry):
-    #     if User.query.filter(User.username == entry).first() != None:
-    #             raise ValueError("Username Taken!")
-    #     return entry
 
     def __repr__(self):
         return f'<ID: {self.id}, Username: {self.username}>'

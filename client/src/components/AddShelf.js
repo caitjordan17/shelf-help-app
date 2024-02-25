@@ -1,14 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Book from "./Book";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { addBookshelf as addBookshelfToRedux } from "./actions";
 
-function AddShelf({handleAddShelf}){
+function AddShelf(){
     const [books, setBooks] = useState([])
     const [booksToAdd, setBooksToAdd] = useState([])
-    const { id } = useParams()
     const [submitted, setSubmitted] = useState(false)
+    const dispatch = useDispatch();
+    
+    
 
     useEffect(() => {
         fetch("/books")
@@ -21,15 +25,12 @@ function AddShelf({handleAddShelf}){
     });
 
     function handleClick(bookInEvent){
-        const bookObj = books.filter((book) => book.title == bookInEvent)
-        // console.log("checking...",(booksToAdd.find((book) => book.title == bookInEvent)))
-        if (booksToAdd.find((book) => book.title == bookInEvent)){
+        const bookObj = books.filter((book) => book.title === bookInEvent)
+        if (booksToAdd.find((book) => book.title === bookInEvent)){
         } else {
             setBooksToAdd([...booksToAdd, bookObj[0]])
         }
     }
-
-    // console.log("booksToAdd:",booksToAdd)
 
     const formik = useFormik({
         initialValues: {
@@ -46,7 +47,7 @@ function AddShelf({handleAddShelf}){
 
     function handleAfterFormik(values){
         const bookshelfName = values.name
-        // console.log("bookshelfName:", bookshelfName)
+
         readyToPost({bookshelfName, booksToAdd})
     }
 
@@ -60,8 +61,7 @@ function AddShelf({handleAddShelf}){
         })
         .then((r) => r.json())
         .then((bkshelf) => {
-            console.log("obj", obj)
-            handleAddShelf(bkshelf)
+            dispatch(addBookshelfToRedux(bkshelf))
         })
     }
     let shelfID=null

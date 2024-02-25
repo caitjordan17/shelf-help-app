@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Book from "./Book";
 import AddBook from "./AddBook";
 
-function BookPage({}){
+function BookPage(){
     const [books, setBooks] = useState([])
 
     useEffect(() => {

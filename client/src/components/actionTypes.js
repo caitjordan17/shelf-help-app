@@ -1,0 +1,5 @@
+export const SET_USER = "setUser"
+export const SET_BOOKSHELVES = "setBookshelves"
+export const ADD_BOOKSHELF = "addBookshelf"
+export const DELETE_BOOKSHELF = "deleteBookshelf"
+export const RENAME_BOOKSHELF = "renameBookshelf"

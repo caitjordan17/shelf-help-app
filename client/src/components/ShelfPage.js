@@ -1,15 +1,20 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Book from "./Book";
 import { useParams, Link } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useSelector, useDispatch } from 'react-redux';
+import { 
+    deleteBookshelf as removeBookshelfFromRedux,
+    renameBookshelf as renameBookshelfInRedux,
+  } from "./actions";
 
-function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
+
+function ShelfPage(){
     const [shelf, setShelf] = useState(null);
-    const [clicked, setClicked] = useState(false);
     const { id } = useParams();
-
-    // console.log(shelf.bookshelf_book)
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetch(`/bookshelves/${id}`) 
@@ -18,19 +23,14 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
     },[])
 
     let authorizedToEdit = false
-
     if (user != null && shelf && shelf.user != null){
-        authorizedToEdit = shelf.user.username == user.username
+        authorizedToEdit = shelf.user.username === user.username
     }
-
     let shelfID=null
     if (shelf != null){
         shelfID=shelf.id
     }
-        
-    function handleEdit(){
-        setClicked(!clicked)
-    }
+
 
     const formSchema = yup.object().shape({
         name: yup.string().required("Name required for bookshelves").max(50, "Bookshelf name cannot exceed 50 characters"),
@@ -63,34 +63,33 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
             body: JSON.stringify(updatedName),
         })
         .then((r) => r.json())
-        .then((r) => {
-            console.log("obj", updatedName)
-            handleNameUpdate(updatedName, id)
-            shelfPageNameUpdate(updatedName)
+        .then((bookshelf) => {
+            console.log("obj", bookshelf)
+            dispatch(renameBookshelfInRedux(bookshelf))
+            setShelf((prevShelf) => {
+                return { ...prevShelf, name: updatedName.name };
+              })
         })
     }
-    
-    function onDeleteShelf(){
-        console.log("Deleting bookshelf with ID:", id)
-        handleDeleteShelf(id)
-        console.log("Deleted")
-        setShelf(null)
+
+    function handleDeleteShelf(){
+        fetch(`/bookshelves/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        dispatch(removeBookshelfFromRedux(id))
+        setShelf(null)  
     }
-
-    function shelfPageNameUpdate(updatedName){
-        shelf.name = updatedName.name
-      }
-
-    
-    
 
     return(
         <div id="bookshelfCard">
-            {shelf 
+            {shelf && shelf.user 
             ?
             <div>
-                <h2 className="bk-h2">{shelf ? shelf.name : 'No shelf to show! Click the "Browse Shelves" button to get back to browsing'}</h2>
-                <p>{shelf ? `created by ${shelf.user.username}` : null}</p>
+                <h2 className="bk-h2">{shelf.name}</h2>
+                <p>created by {shelf.user.username}</p>
             </div>
             : null
             }           
@@ -113,13 +112,17 @@ function ShelfPage({handleDeleteShelf, handleNameUpdate, user}){
                 : null
             }
             <div id="book-list">
-                {shelf && shelf.bookshelf_book.map((book) => (
-                    <Book shelfID={shelfID} authorizedToEdit={authorizedToEdit} bkshelfbk={book.read_status} book={book.book} key={book.id} />
+                {shelf && shelf.bookshelf_book && shelf.bookshelf_book.map((book) => (
+                    <Book 
+                        shelfID={shelfID} 
+                        authorizedToEdit={authorizedToEdit} 
+                        bkshelfbk={book.read_status} 
+                        book={book.book} key={book.book.id} />
                 ))}
             </div>
             {authorizedToEdit ? 
                 <div>
-                    <button id="delete-btn"onClick={onDeleteShelf}>Delete Shelf</button> 
+                    <button id="delete-btn"onClick={handleDeleteShelf}>Delete Shelf</button> 
                     <Link className="link-to-btn"to={`/my-shelves`}>Browse My Shelves</Link>
                 </div>    
                 :<Link className="link-to-btn"to={`/browse-shelves`}>Browse Shelves</Link>

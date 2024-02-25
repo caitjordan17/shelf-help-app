@@ -1,8 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser as setReduxUser } from "./actions";
 
-function SignUp({setAppUser, setLoggedIn, loggedIn}){
+function SignUp(){
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user)
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Username required").max(50, "Username cannot exceed 50 characters"),
@@ -18,7 +22,6 @@ function SignUp({setAppUser, setLoggedIn, loggedIn}){
         validationSchema: formSchema,
 
         onSubmit: (values, {resetForm}) => {
-            setLoggedIn(true)
             resetForm()
             handleAfterFormik(values)
         }
@@ -40,14 +43,14 @@ function SignUp({setAppUser, setLoggedIn, loggedIn}){
         })
         .then((r) => r.json())
         .then((user) => {
-            setAppUser(user)
+            dispatch(setReduxUser(user))
         })
     }
 
 
     return(
         <div>
-            {loggedIn ? 
+            {user ? 
             <div>
                 <h2>Submitted!</h2>
             </div>

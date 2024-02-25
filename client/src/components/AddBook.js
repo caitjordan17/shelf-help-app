@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-function AddBook({onAddBook}){
+function AddBook({ onAddBook }){
 
     const formSchema = yup.object().shape({
-        // title: yup.string().required("Book must have title"),
+        title: yup.string().required("Book must have title"),
         bookCover: yup.string().url().required("Book must have book cover url"),
         author: yup.string().required("Book must have author")
     });

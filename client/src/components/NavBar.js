@@ -1,8 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-function NavBar({user, handleLogout}){
+function NavBar({ handleLogout }){
+    const user = useSelector(state => state.user)
 
+   
     return(
         <header className="header">
             {user ? <h3 id="welcome-user"> Welcome {user.username}! </h3>: null}
@@ -11,7 +14,7 @@ function NavBar({user, handleLogout}){
                 <NavLink className="navButton" exact to="/browse-shelves">Browse Shelves</NavLink>
                 <NavLink className="navButton" exact to="/my-shelves">My Shelves</NavLink>
                 <NavLink className="navButton" exact to="/browse-books">Browse Books</NavLink>
-                {user && user.username ? <button className="navButton" id="logout-btn" onClick={handleLogout} >Logout</button> : 
+                {user ? <button className="navButton" id="logout-btn" onClick={handleLogout} >Logout</button> : 
                 <NavLink className="navButton" exact to="/login">Login</NavLink>}
             </nav>
         </header>

@@ -3,10 +3,15 @@ import React, {useState} from "react";
 import SignUp from "./SignUp";
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser as setReduxUser } from "./actions";
 
-function Login({setAppUser, loggedIn, setLoggedIn, user}){
+
+function Login(){
     const [errors, setErrors] = useState(false);
     const [clicked, setClicked] = useState(false);
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user)
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Username required"),
@@ -44,8 +49,7 @@ function Login({setAppUser, loggedIn, setLoggedIn, user}){
         .then((r) => {
             if(r.ok){
                 r.json().then((user) =>{
-                    setAppUser(user)
-                    setLoggedIn(true)
+                    dispatch(setReduxUser(user))
                 })
                 .then(setErrors(false));
             } else {
@@ -60,7 +64,7 @@ function Login({setAppUser, loggedIn, setLoggedIn, user}){
 
     return(
         <div id="login-div"> 
-            {loggedIn ? (
+            {user ? (
             <h3 id="login-header">Logged In!</h3>
             ) : (
             <div>
@@ -91,9 +95,7 @@ function Login({setAppUser, loggedIn, setLoggedIn, user}){
                 </div>
                 <div>
                 {clicked ?
-                    <SignUp 
-                        setAppUser={setAppUser} user={user} 
-                        loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+                    <SignUp />
                     : <div>
                         <h4 id="signin-question">Not already a user?</h4>
                         <button id="expand-signup" onClick={handleClick}>Sign Up Here!</button>
@@ -108,29 +110,3 @@ function Login({setAppUser, loggedIn, setLoggedIn, user}){
 
 export default Login;
 
-
-    // function handleSubmit(e){
-    //     e.preventDefault();
-    //     setIsLoading(true);
-    //     fetch("/login", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: 'include',
-    //         body: JSON.stringify({ username, password }),
-    //     }).then((r) => {
-    //         setIsLoading(false);
-    //         if (r.ok) {
-    //             r.json().then((user) => {
-    //                 setAppUser(user);
-    //                 setLoggedIn(true);
-    //                 setUsername("");
-    //                 setPassword("");
-    //             })
-    //             .then(setErrors(false));
-    //         } else {
-    //             r.json().then((err) => setErrors(true));
-    //         }
-    //     });
-    // }

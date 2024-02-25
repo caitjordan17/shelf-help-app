@@ -39,14 +39,6 @@ def get_by_user(cls, uid):
 def index():
     return '<h1>BookShelf BackEnd</h1>'
 
-# 24 pages or more
-
-
-class BigBook (Resource):
-    def get(self, page_number):
-        books = [book.to_dict() for book in Book.query.filter(Book.page_count >= page_number).all()]
-        return books
-
 class CheckReadStatus (Resource):
     def patch(self, bk_id, bkslf_id):
         line = Bookshelf_book.query.filter_by(book_id=bk_id, bookshelf_id=bkslf_id).first()
@@ -54,13 +46,8 @@ class CheckReadStatus (Resource):
             line.read_status = not line.read_status
             db.session.commit()
             print(line.read_status)
+            print(session)
         return (line.read_status, 200)
-
-    
-    # query bookshelf_book for match to both ids
-    # check user = matching session to bookshelf.user
-    # if both correct, accept post to update read status
-    # in front end add button or emoji that user can click & it changes to !=
 
 class Books(Resource):
     def get(self):
@@ -135,22 +122,19 @@ class BookshelvesByID(Resource):
     def patch(self, id):
         data = request.get_json()
         bookshelf = Bookshelf.query.filter_by(id=id).first()
+        print('pre', session)
+
         for attr in data:
             setattr(bookshelf, attr, data[attr])
         db.session.add(bookshelf)
         db.session.commit()
+        print('post', session)
+
         return make_response(bookshelf.to_dict(), 200)
     
 class Users(Resource):
     def get(self):
         return make_response(get_all(User), 200)
-     
-class CurrentUser(Resource):
-    def get(self):
-        current_session = [session]
-        print(current_session)
-        current_user = User.query.filter(User.id == current_session.user_id).first()
-        return make_response(current_session, 200)
     
 class Login(Resource):
     def post(self):
@@ -159,10 +143,8 @@ class Login(Resource):
         password = data.get('password')
         user = User.query.filter(User.username == username).first()
         if user and user.authenticate(password):
-            print(user)
             session['user_id'] = user.id
             session.permanent = True
-            print(session)
             response = make_response(user.to_dict(), 200)
             return response
         return {'message': 'Invalid username or password'}, 401
@@ -212,8 +194,6 @@ class Logout(Resource):
         return {'error': '401 Unauthorized'}, 401
 
 api.add_resource(CheckReadStatus, '/check_read_status/<int:bk_id>/<int:bkslf_id>', endpoint='check_read_status')
-api.add_resource(BigBook, '/big_book/<int:page_number>')
-api.add_resource(CurrentUser, '/current_user', endpoint='current_user')
 api.add_resource(Users, '/users', endpoint='users')
 api.add_resource(Bookshelves, '/bookshelves', endpoint='bookshelves')
 api.add_resource(Books, '/books', endpoint='books')

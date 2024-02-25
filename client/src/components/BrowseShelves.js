@@ -1,15 +1,17 @@
-import React, {useState} from "react";
+import React from "react";
 import ShelfBar from "./ShelfBar";
-import ShelfPage from "./ShelfPage";
+import { useSelector } from 'react-redux';
 
-function BrowseShelves({bookshelves, user}){
+
+function BrowseShelves(){
+    const reduxBookshelves = useSelector(state => state.bookshelves)
+
     return(
         <div>
-            {bookshelves.map((bshelf) => (
+            {reduxBookshelves.map((bshelf) => (
                 <ShelfBar 
                     bshelf={bshelf} 
                     key={bshelf.id} 
-                    user={user}
                 />
             ))}
 
