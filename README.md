@@ -21,4 +21,25 @@ With ShelfHelp you can:
  - edit your bookshelf name
  - delete a bookshelf
 
+## How to get started!
+ - First you'll want to fork & clone this repository.
+ - You'll want to check out the requirements file & make sure you have everything you need there.
+ - Next you'll want to run these commands for the backend:
+   - pipenv install && pipenv shell
+   - cd server
+   - export FLASK_APP=app.py
+   - export FLASK_RUN_PORT=5555
+   - flask db init
+   - flask db migrate -m "initial migration"
+   - flask db upgrade head
+   - python seed.py
+   - python app.py
+ - In another terminal you'll want to run these commands for the front end:
+   - cd client
+   - npm install
+   - npm start
+  
+ Enjoy!
+
+
  ## Stay tuned for more updates!
