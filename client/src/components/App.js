@@ -25,7 +25,7 @@ function App() {
       .then((bookshelves) =>{
         dispatch(setReduxBookshelves(bookshelves))
       });
-    }, [reduxBookshelves]);
+    }, []);
 
     useEffect(() => {
       fetch("/check_session")
