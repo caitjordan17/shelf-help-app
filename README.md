@@ -1,4 +1,4 @@
-# Shelfhelp - a book list app
+# Shelfhelp - a book list app 📚
 
 ### About
 ShelfHelp is an app designed to be able to store book lists for users and allow you to 
