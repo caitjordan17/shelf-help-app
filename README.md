@@ -41,7 +41,3 @@ With ShelfHelp you can:
    - ```npm install```
    - ```npm start```
   
- Enjoy!
-
-
- ## Stay tuned for more updates!
